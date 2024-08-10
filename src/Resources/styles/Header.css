@@ -1,0 +1,220 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: yellow; /* Light yellow background */
+    color: black; /* Dark text for contrast */
+    height: 80px;
+    padding-bottom: 80px;
+    margin-top: -10px;
+    border-bottom-style: solid;
+    border-bottom-color: black;
+    border-bottom-width: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle bottom border */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#logo {
+    width: 50px; /* Adjust the logo size as needed */
+    height: auto;
+    margin-top: -10px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: black;
+    font-weight: 900;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    margin-top: -15px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    margin-top: -20px;
+}
+
+.nav-links li {
+    display: inline;
+    font-weight: 800;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: black;
+    font-size: 0.9rem; /* Slightly smaller font size */
+    padding: 0.5rem 0.75rem; /* Adjusted padding for links */
+    border-radius: 5px; /* Rounded corners for links */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#main-thing {
+    background-color: white;
+}
+
+#main-thing:hover {
+    background-color: black;
+    color: white;
+}
+
+.nav-links a:hover {
+    background-color: black;
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-links {
+        flex-direction: column;
+        display: none;
+        width: 100%; /* Full width on mobile */
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    #logo {
+        margin-bottom: 1rem; /* Spacing between logo and links on mobile */
+    }
+    .logo {
+        margin-left: 0;
+        margin-bottom: 1rem; /* Spacing between logo and links on mobile */
+    }
+}
+
+#userIcon {
+    position: absolute;
+    top: 0;
+    font-size: 30px;
+    color: white;
+    margin-left: 350px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+#userIcon:hover {
+    color: white;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    right: 20px;
+    top: 60px;
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-section img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+
+.profile-section .file-label {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.profile-section .file-label:hover {
+    background-color: #45a049;
+}
+
+.profile-section input[type="file"] {
+    display: none;
+}
+
+.info-section p {
+    margin: 10px 0;
+}
+
+.edit-btn,
+.logout-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.edit-btn {
+    background-color: #008CBA;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #007bb5;
+}
+
+.logout-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.logout-btn:hover {
+    background-color: #da190b;
+}

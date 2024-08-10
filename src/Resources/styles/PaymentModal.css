@@ -1,0 +1,158 @@
+/* Background blur overlay */
+.background-blur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  transition: filter 0.3s ease;
+  z-index: 998;
+  pointer-events: none;
+}
+
+.background-blur.blurred {
+  filter: blur(5px);
+}
+
+/* Modal container */
+.payment-modal {
+  margin-top: -200px;
+  margin-left: 760px;
+  width: 550px;
+  height: auto;
+  background-color: white;
+  border-radius: 12px;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Modal text */
+#paytext {
+  color: black;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Buttons */
+#bookslots-button, #payment-button, #previous-button, #close-button {
+  color: black;
+  background: transparent;
+  width: 150px;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  margin-right: 20px;
+  text-align: center;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#bookslots-button:hover, #payment-button:hover, #previous-button:hover, #close-button:hover {
+  background: green;
+  color: white;
+}
+
+/* Modal footer buttons container */
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Input fields */
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  border-color: #66afe9;
+  outline: none;
+}
+
+/* Slot booking area styling */
+.slot-booking-area {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.slot-booking-area h2 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 10px;
+}
+
+.slot {
+  background-color: #e0e0e0;
+  padding: 10px;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.slot:hover {
+  background-color: #c0c0c0;
+}
+
+/* Selected slot styling */
+.slot.selected {
+  background-color: green;
+  color: white;
+}
+
+/* Close button styling */
+.close-button {
+  position: absolute;
+  top: -30px;
+  left:500px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  width:50px;
+  cursor: pointer;
+  color: black;
+}
+
+
+.close-button:hover {
+  background: red;
+
+}
+

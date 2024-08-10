@@ -1,0 +1,135 @@
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+  #footerbg{
+    background-color: yellow;
+    /* border-style: solid;
+    border-color: black;
+    border-width: 10px; */
+    border-top-color:black ;
+    border-top-style: solid ;
+    border-top-width: 4px ;
+  }
+  
+  .column {
+    flex: 1 1 33%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-left: 150px;
+    font-size: x-large;
+    
+  }
+  .column h5{
+       font-size: x-large;   
+  }
+  
+  .nav {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .nav li {
+    margin-bottom: 10px;
+
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    color: #6c757d;
+    padding: 0;
+    margin-top: 10px;
+    font-size: medium;
+  }
+  .nav-link:hover{
+    color: black;
+    font-weight: 300;
+  }
+  
+  .nav-link:hover {
+    color: #000;
+  }
+  
+  .newsletter {
+    flex: 1 1 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  form {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border: 1px solid black;
+    border-radius: 4px;
+    color: black;
+    cursor: pointer;
+    width: 200px;
+    margin-top: 30px;
+    background: transparent;
+    transition: 0.3s;
+
+  }
+  button:hover{
+    background-color: #007bff;
+    color: whitesmoke;
+
+  }
+  #like-text{
+    font-weight: bold;
+  }
+  #fill p{
+    margin-top: 20px;
+  }
+  #fill h5{
+    font-weight: 500;
+    font-size: xx-large;
+  }
+  
+  button:hover {
+    background-color: black;
+  }
+  
+  @media (min-width: 768px) {
+    .input-group {
+      flex-direction: row;
+    }
+    
+    .newsletter {
+      flex: 1 1 40%;
+      margin-left: auto;
+    }
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-start {
+    animation: slideIn 1s ease-in-out;
+  }

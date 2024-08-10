@@ -3,11 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@paypal/react-paypal-js": "^8.5.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "aos": "^3.0.0-beta.6",
+    "axios": "^1.7.3",
+    "bootstrap-icons": "^1.11.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "firebase": "^10.12.5",
+    "multer": "^1.4.5-lts.1",
+    "razorpay": "^2.9.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-native-upi": "^1.0.6",
+    "react-native-upi-payment": "^1.0.5",
+    "react-router-dom": "^6.26.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -34,5 +47,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "tailwindcss": "^3.4.7"
   }
 }

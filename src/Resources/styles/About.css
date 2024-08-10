@@ -1,0 +1,99 @@
+/* AboutUs.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.background {
+    /* background-image: url('your-image-url-here'); */
+    background-size: cover;
+    background-position: center;
+    background-color: yellow;
+    padding: 50px 0;
+    /*border-top-style: solid ;
+    border-top-color: black ;
+    border-top-width: 4px ; */
+}
+
+
+#icons{
+    padding-left: 230px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.px-4 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.py-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+/* .my-5 {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+} */
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+.fw-bold {
+    font-weight: bold;
+}
+
+.text-body-emphasis {
+    color: #343a40;
+}
+
+.col-lg-6 {
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+.container {
+    padding-top: 30px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Add gap between columns if needed */
+}
+
+.col {
+    flex: 1;
+    text-align: center;
+}
+.abt-us{
+    padding-bottom: 10px;
+}
+.col img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1rem 0;
+}
