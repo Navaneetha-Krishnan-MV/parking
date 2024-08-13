@@ -58,9 +58,9 @@ function Header() {
       <nav className="navbar">
         <div className="container">
           <img src={img} alt="Logo" id="logo" />
-          <Link to="/" className="logo">Parking Website</Link>
+          <Link to="/" className="logo font-sans">Parking Website</Link>
           <ul className="nav-links">
-            <li><Link to="/">Home</Link></li>
+            <li className="font-sans"><Link to="/">Home</Link></li>
             <li><Link to="/about">About</Link></li>
             {email ? (
               <>
@@ -105,20 +105,4 @@ function Header() {
 }
 
 export default Header;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

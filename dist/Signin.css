@@ -2,7 +2,7 @@ body {
   margin: 0;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background-color: #f8f8f8;
-   color: #333;
+  color: #333;
 }
 
 .signin-container {
@@ -11,7 +11,6 @@ body {
   align-items: center;
   height: 100vh;
   background-color: white;
-
 }
 
 .image-section-left,
@@ -21,17 +20,13 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 .image-section-left img{
   position: absolute;
   width: 500px;
   height: 360px;
   margin-left: 130px;
-
-
-
-
 }
-
 
 .image-section-right{
   position: relative;
@@ -39,8 +34,6 @@ body {
   max-width: 400px;
   width: 100%;
   border-radius: 10px;
-
-
 }
 
 .signin-form {

@@ -1,246 +1,121 @@
-* {
+body {
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f8f8f8;
+    color: #333;
   }
   
-  .video-background {
-    position: relative; /* Ensure relative positioning */
-    width: 100%;
-    height: 100vh;
-  }
-  
-  .video-background video {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
-  
-  .video-background .content {
-    position: absolute;
-    width: 100%;
-    height: 100vh;
-    top: 0;
+  .login-container {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #ffff;
-    z-index: 2; /* Ensure content is above the overlay */
+    height: 100vh;
+    background-color: #f7f7f7;
   }
   
-  #text{
-    position: absolute;
-    font-size: 4em;
-    transition: margin-top 0.5s ease-out; /* Adjust the duration and easing as needed */
-  }
-  
-  .video-background .overla {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
+  .login-form {
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    z-index: 1; /* Ensure overlay is above the video */
-  }
-  
-  .welcome-section {
-    flex: 1;
+    max-width: 400px;
     padding: 40px;
-    background-color: transparent;
-    color: white;
-    margin-left:-300px ;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-radius: 8px 0 0 8px;
-    margin-top: -100px;
-    border-radius: 12px;
-    position: relative;
-    left:-20%;
-}
-
-#welcome {
-    font-size: 80px;
-    font-weight: 700;
-    color: yellow;
-    margin-left: -80px;
-    margin-top: 380px;
-}
-#googlebutton{
-    width: 50%;
-    padding: 10px;
-    border: 1px solid black;
-    border-radius: 4px;
-    background: transparent;
-    color: black;
-    font-size: 16px;
-    cursor: pointer;
-    margin-left: 25%;
-    margin-top: 30px;
-    transition: background 0.3s ease, color 0.3s ease;
-
-}
-#googlebutton:hover{
-      background: green;
-      color: white;
-}
-#already{
-    margin-top: 30px;
-    margin-left: 30px;
-
-}
-
-#welpara {
-    margin-top: 20px;
-    font-size: larger;
-    margin-left: -80px;
-}
-
-.in {
-    width: 220px;
-    padding: 10px 15px;
-    border: 2px solid #f39c12;
+    background-color: #fff;
     border-radius: 8px;
-    background-color: #f1c40f;
-    color: #333;
-    font-size: 16px;
-    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    cursor: pointer;
-    position: absolute;
-    text-decoration: none;
-    left: 100px;
-    top:400px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-}
-
-
-
-.in:active {
-    background-color: #e67e22;
-    transform: scale(0.98);
-}.in:hover {
-    background-color: #f39c12;
-    color: #fff;
-    transform: scale(1.05);
-}
-
-.welcome-section h1 {
-    margin: 0 0 20px;
-    font-size: xx-large;
-    border-radius: 12px;
-    
-}
-
-.welcome-section p {
-    margin: 0 0 20px;
-    font-size: larger;
-}
-
-.more-info-btn {
-    padding: 10px 20px;
-    border: none;
-    background-color: yellow;
-    color: black;
-    cursor: pointer;
-    
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-.more-info-btn:hover {
-    background-color: black;
-    color: white;
-}
-
-.login-section {
-    flex: 1;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: transparent;
-    color: white;
-    border:0.5px solid white;
-    border-radius: 0 8px 8px 0;
     position: relative;
-    left:400px;
-    top:-360px;
-    width:400px;
-    
-}
-
-#fo {
-    background: transparent;
-}
-
- .login-section h1 {
+    left: 10%;
+  
+  }
+  
+  .login-title {
+    font-size: 1.5rem;
+    font-weight: bold;
     margin-bottom: 20px;
+    color: #282c3f;
+  }
+  
+  .input-group1 {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .input-group1 input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    font-size: 1rem;
     color: #333;
-    margin-top: -30px;
-    margin-left: 120px;
-
-}
-
-.input-group {
-    margin-bottom: 20px;
-    text-align: left;
-    margin-top: 20px;
-    
-    
-}
-#n,#p{
-    color:white;
-}
-#password,#username{
-    border:0.5px solid black;
-    
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #666;
-}
-
-input {
+  }
+  
+  .input-group1 input:focus {
+    border-color: #fc8019;
+    outline: none;
+  }
+  
+  .input-group1 input.error {
+    border-color: red;
+  }
+  
+  .error-text {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 5px;
+  }
+  
+  .login-button {
     width: 100%;
-    padding: 10px;
-    border: 1px solid black;
-    border-radius: 4px;
-    background: transparent;
-}
-
-#log {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid white;
-    border-radius: 4px;
-    background: transparent;
-    font-size: 16px;
-    color:black;
-    font-weight: 700;
-    font-size: x-large;
-    cursor: pointer;
-    transition: background 0.3s ease, color 0.3s ease;
-}
-#log:hover{
-    background: yellow;
-}
-
-button:hover {
-    background: black;
+    padding: 12px;
+    background-color: #fc8019;
     color: white;
-}
-
-.blink {
-    animation: blinkAnimation 0.5s;
-}
-
-@keyframes blinkAnimation {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
-
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .login-button:hover {
+    background-color: #e76e15;
+  }
+  
+  .google-button-for-log {
+    width: 100%;
+    padding: 12px;
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .google-button-for-log i {
+    margin-left: 10px;
+  }
+  .google-button-for-log:hover{
+    background-color: black;
+  }
+  
+  .signup-link {
+    margin-top: 20px;
+    font-size: 0.875rem;
+    color: #282c3f;
+  }
+  
+  .signup-link a {
+    color: #fc8019;
+    text-decoration: none;
+  }
+  
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+  .login-image{
+    width: 100%;
+    left:-300px;
+  }
+  

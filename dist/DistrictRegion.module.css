@@ -1,0 +1,148 @@
+/* DistrictRegionSelector.module.css */
+
+body{
+  background-color: yellow;
+}
+
+.container {
+  margin: 1rem auto;
+  max-width: 800px;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdownContainer {
+  flex: 1;
+}
+
+.dropdown {
+  margin-bottom: 1rem;
+}
+
+.dropdown label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.dropdown select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.results {
+  margin-top: 1rem;
+  color: #555;
+  font-style: italic;
+}
+
+.title {
+  margin-left: 2rem;
+  font-size: 1.5rem;
+  background-color: yellow;
+  color: black;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.details {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.details h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.parkingDetails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.parkingItem {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fafafa;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  flex-basis: 48%;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.parkingItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.parkingItem h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.parkingItem p {
+  margin: 0.5rem 0;
+}
+
+.bookButton {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.bookButton:hover {
+  background-color: #0056b3;
+}
+
+.left {
+  animation: fadeInLeft 1s;
+}
+
+.right {
+  animation: fadeInRight 1s;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

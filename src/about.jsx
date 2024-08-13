@@ -1,42 +1,93 @@
 import React from "react";
 import "./Resources/styles/About.css";
 import icon from "./Resources/parking-icon1.png";
-import google from "./Resources/Aboutimages/Google.png";
-import facebook from "./Resources/Aboutimages/Facebook.png";
-import insta from "./Resources/Aboutimages/Instagram.png";
-import playstore from "./Resources/Aboutimages/playstore.png";
+import service1 from "./Resources/Aboutimages/ser1.png"; // Import images for first set of services
+import service2 from "./Resources//Aboutimages/ser2.png";
+import service3 from "./Resources/Aboutimages/service-3.png";
+import safeSecure from "./Resources/Aboutimages/ser1.png"; // Import images for second set of services
+import fullyEncrypted from "./Resources/Aboutimages/ser2.png";
+import instantPickup from "./Resources/Aboutimages/ser2.png";
+import realTimeTracking from "./Resources/Aboutimages/ser2.png";
 
-
-function About(){
-
-    return(
-        <div className="background">
-            <div className="px-4 py-1 my-5 text-center">
-                <img className="d-block mx-auto mb-4" src={icon} alt="Logo" width="60" height="60" />
-                <h1 className="display-5 fw-bold text-body-emphasis abt-us">About Us</h1>
-                <div className="col-lg-6 mx-auto">
-                    <p className="lead mb-4">
-                    Welcome to ParkPuram, where innovation meets convenience in the world of parking. Our mission is simple: to make parking stress-free and efficient for everyone.Our company emerged from a need for a more organized and accessible parking solution.
-                        <hr/>
-                        Our team of passionate innovators and technology experts recognized the daily challenges drivers face when searching for parking spaces, and we set out to create a solution that transforms this experience.We provide a state-of-the-art parking booking system designed to streamline the way you find and reserve parking spots. Our platform connects drivers with available parking spaces in real-time, offering a seamless and hassle-free experience.At ParkPuram, we are committed to providing a solution that not only meets but exceeds your expectations. Our platform is designed to save you time, reduce stress, and enhance your overall parking experience.
+function About() {
+    return (
+        <div className="about-container">
+            <div className="background">
+                <div className="content">
+                    <img className="icon" src={icon} alt="Logo" width="60" height="60" />
+                    <p className="description">
+                        Lorem ipsum dolor sit amet consectetur adipi<br></br>
+                        sicing elit. Possimus temporibus<br></br>
+                        numquam totam quae laudantium sed? Praesentium expedita <br></br>
+                        dolorem debitis suscipit.
                     </p>
-                    <div className="container text-center">
-                        <div className="row align-items-start" id="icons">
-                            <p className="col">
-                                <img src={google} height="50px" alt="Google" />
-                            </p>
-                            <p className="col">
-                                <img src={facebook} height="50px" alt="Facebook" />
-                            </p>
-                            <p className="col">
-                                <img src={insta} height="50px" alt="Instagram" />
-                            </p>
-                            <p className="col">
-                                <img src={playstore} height="50px" alt="Play Store" />
-                            </p>
-                        </div>
-                    </div>
+                    <button className="get-started-btn">Get Started</button>
                 </div>
+            </div>
+            <div className="about-us">
+                <h2>About Us</h2>
+                <div className="line"></div>
+                <p className="about-paragraph">
+                    We are dedicated to providing the best services to our customers. Our team of professionals is committed to ensuring your satisfaction with every interaction.
+                </p>
+            </div>
+            <div className="services">
+                <div className="service-item">
+                    <img src={service1} alt="Professional Service" className="service-icon" />
+                    <h3>Professional Service</h3>
+                    <p>Offering top-notch professional services to meet your needs.</p>
+                </div>
+                <div className="service-item">
+                    <img src={service2} alt="Security" className="service-icon" />
+                    <h3>Security</h3>
+                    <p>Ensuring your safety with our state-of-the-art security solutions.</p>
+                </div>
+                <div className="service-item">
+                    <img src={service3} alt="Another Service" className="service-icon" />
+                    <h3>Another Service</h3>
+                    <p>Providing additional services tailored to your requirements.</p>
+                </div>
+            </div>
+
+            <div className="about-us">
+                <h2>Why We Are Best?</h2>
+            </div>
+            
+            <div className="services-new">
+                <div className="service-item-new">
+                    <img src={safeSecure} alt="Safe & Secure" className="service-icon-new" />
+                    <h3>Safe & Secure</h3>
+                    <p>Your safety is our priority with our secure solutions.</p>
+                </div>
+                <div className="service-item-new">
+                    <img src={fullyEncrypted} alt="Fully Encrypted" className="service-icon-new" />
+                    <h3>Fully Encrypted</h3>
+                    <p>Your data is safe with our full encryption technology.</p>
+                </div>
+                <div className="service-item-new">
+                    <img src={safeSecure} alt="Instant Cash Pickup" className="service-icon-new" />
+                    <h3>Instant Cash Pickup</h3>
+                    <p>Quick and easy cash pickup services at your convenience.</p>
+                </div>
+                <div className="service-item-new">
+                    <img src={realTimeTracking} alt="Real-Time Tracking" className="service-icon-new" />
+                    <h3>Real-Time Tracking</h3>
+                    <p>Track your orders in real-time with our advanced system.</p>
+                </div>
+                <div className="service-item-new">
+                    <img src={safeSecure} alt="Real-Time Tracking" className="service-icon-new" />
+                    <h3>Real-Time Tracking</h3>
+                    <p>Track your orders in real-time with our advanced system.</p>
+                </div>
+                <div className="service-item-new">
+                    <img src={instantPickup} alt="Real-Time Tracking" className="service-icon-new" />
+                    <h3>Real-Time Tracking</h3>
+                    <p>Track your orders in real-time with our advanced system.</p>
+                </div>
+            </div>
+            
+            <div className="about-us">
+                <h2>Remaining</h2>
             </div>
         </div>
     );

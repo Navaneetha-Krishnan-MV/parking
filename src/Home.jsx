@@ -51,11 +51,11 @@ function HomeBody(){
     </div>
 
     <div class="heroes">
-        <h1 class="heroes__title" data-aos="zoom-in-up"  data-aos-duration="2000">Find Your Perfect Parking Spot</h1>
+        <h1 class="heroes__title " data-aos="zoom-in-up"  data-aos-duration="2000">Find Your Perfect Parking Spot</h1>
         <br />
          <div class="heroes__content">
-             <p class="heroes__lead"  data-aos="zoom-in-up"  data-aos-duration="2000">
-              <ul>
+             <p class="heroes__lead font-sans"  data-aos="zoom-in-up"  data-aos-duration="2000">
+              <ul className="font-sans">
                 Book parking slots easily and quickly with our user-friendly platform.
                 Enjoy seamless navigation, real-time availability, and secure payments.
                 Make your parking experience hassle-free with just a few clicks!
@@ -68,14 +68,13 @@ function HomeBody(){
     </div> 
 
     <div className="container" id="hanging-icons">
-      <h2 className="section-title"  data-aos="fade-right"  data-aos-duration="2000">Welcome to ParkPuram</h2>
       <div className="icon-row">
         <div className="icon-col">
           {/* <div className="icon-box">
             <img src={toggleImage}  className="icon" />
           </div> */}
           <div className="icon-content"  data-aos="fade-up"  data-aos-duration="2000">
-            <h3 className="icon-title" id="need">Track Bookings functionality</h3>
+            <h3 className="icon-title " id="need">Track Bookings functionality</h3>
             <p className="icon-text">
               <ul>
               <li>Keep tabs on all your parking spot bookings effortlessly.</li>
@@ -106,7 +105,7 @@ function HomeBody(){
             <img src={toolsImage}  className="icon" />
           </div> */}
           <div className="icon-content" >
-            <h3 className="icon-title"data-aos="fade-up"  data-aos-duration="2000" >Smart Parking Reservations</h3>
+            <h3 className="icon-title" data-aos="fade-up"  data-aos-duration="2000" >Smart Parking Reservations</h3>
             <p className="icon-text">
               <ul data-aos="fade-up"  data-aos-duration="2000">
             <li>Find and book your ideal parking spot with our filtering options.</li><li>Customize your search to meet your parking needs perfectly.</li><li>Experience a convenient and efficient reservation process.</li>

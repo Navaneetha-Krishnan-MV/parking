@@ -1,21 +1,29 @@
-/* General Reset */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
 * {
     margin: 0;
-    padding: 0;
+    padding:0;
     box-sizing: border-box;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 /* Navbar Styling */
 .navbar {
-    background-color: yellow; /* Light yellow background */
-    color: black; /* Dark text for contrast */
+    color: black; 
     height: 80px;
     padding-bottom: 80px;
     margin-top: -10px;
-    border-bottom-style: solid;
-    border-bottom-color: black;
-    border-bottom-width: 4px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle bottom border */
+  backdrop-filter: blur(10px);
+
+  
+  /* background: #475569; */
+  background: #5A72A0;
+  box-shadow: 0 4px 6px rgba(121, 96, 231, 0.3); 
 }
 
 .container {
@@ -27,15 +35,14 @@
 }
 
 #logo {
-    width: 50px; /* Adjust the logo size as needed */
+    width: 50px; 
     height: auto;
-    margin-top: -10px;
+    /* margin-top: 5px; */
 }
 
 .logo {
     font-size: 1.5rem;
     text-decoration: none;
-    color: black;
     font-weight: 900;
     margin-left: 1rem;
     display: flex;
@@ -58,11 +65,31 @@
 .nav-links a {
     text-decoration: none;
     color: black;
-    font-size: 0.9rem; /* Slightly smaller font size */
-    padding: 0.5rem 0.75rem; /* Adjusted padding for links */
-    border-radius: 5px; /* Rounded corners for links */
-    transition: background-color 0.3s, color 0.3s;
+    font-size: 0.9rem; 
+    padding: 0.5rem 0.75rem; 
+    border-radius: 5px;
+
+    position: relative;
+    transition: color 0.3s;
+    font-size: larger;
 }
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px; 
+    background-color : white;
+        transition: width 0.4s; 
+}
+
+.nav-links a:hover::after {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    width: 100%; 
+}
+
 
 #main-thing {
     background-color: white;
@@ -73,17 +100,13 @@
     color: white;
 }
 
-.nav-links a:hover {
-    background-color: black;
-    color: white;
-}
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .nav-links {
         flex-direction: column;
         display: none;
-        width: 100%; /* Full width on mobile */
+        width: 100%; 
     }
     .nav-links.active {
         display: flex;
@@ -93,21 +116,20 @@
         align-items: flex-start;
     }
     #logo {
-        margin-bottom: 1rem; /* Spacing between logo and links on mobile */
+        margin-bottom: 1rem; 
     }
     .logo {
         margin-left: 0;
-        margin-bottom: 1rem; /* Spacing between logo and links on mobile */
     }
 }
 
 #userIcon {
     position: absolute;
-    top: 0;
+     top: 0;
     font-size: 30px;
-    color: white;
+       color: white;
     margin-left: 350px;
-    margin-top: 10px;
+     margin-top: 10px;
     cursor: pointer;
 }
 
@@ -115,39 +137,38 @@
     color: white;
 }
 
-/* Modal Styling */
 .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+     z-index: 1;
     right: 20px;
-    top: 60px;
+     top: 60px;
     width: 300px;
     background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
+      border-radius: 10px;
     overflow: hidden;
 }
 
 .modal-content {
-    background-color: #fff;
+     background-color: #fff;
     padding: 20px;
-    border-radius: 10px;
+     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    position: relative;
+     position: relative;
 }
 
 .close {
     color: #aaa;
-    float: right;
-    font-size: 28px;
+     float: right;
+     font-size: 28px;
     font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
     color: black;
-    text-decoration: none;
-    cursor: pointer;
+     text-decoration: none;
+     cursor: pointer;
 }
 
 h2 {
@@ -157,9 +178,9 @@ h2 {
 
 .profile-section {
     display: flex;
-    flex-direction: column;
+     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+     margin-bottom: 20px;
 }
 
 .profile-section img {
@@ -169,7 +190,7 @@ h2 {
 }
 
 .profile-section .file-label {
-    background-color: #4CAF50;
+    background-color: #4CAF50; 
     color: white;
     padding: 10px;
     border-radius: 5px;
@@ -178,7 +199,7 @@ h2 {
 }
 
 .profile-section .file-label:hover {
-    background-color: #45a049;
+    background-color: #45a049; 
 }
 
 .profile-section input[type="file"] {
@@ -202,19 +223,19 @@ h2 {
 }
 
 .edit-btn {
-    background-color: #008CBA;
+    background-color: #008CBA; 
     color: white;
 }
 
 .edit-btn:hover {
-    background-color: #007bb5;
+    background-color: #007bb5; 
 }
 
 .logout-btn {
-    background-color: #f44336;
+    background-color: #f44336; 
     color: white;
 }
 
 .logout-btn:hover {
-    background-color: #da190b;
+    background-color: #da190b; 
 }

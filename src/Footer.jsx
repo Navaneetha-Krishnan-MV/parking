@@ -2,7 +2,9 @@ import React from "react";
 import "./Resources/styles/Footer.css"
 import { Link } from 'react-router-dom';
 import AOS from 'aos';
-import 'aos/dist/aos.css'; // You can also use <link> for styles
+import 'aos/dist/aos.css';
+
+ // You can also use <link> for styles
 // ..
 
 function Footer(props){
@@ -21,6 +23,9 @@ function Footer(props){
           <li><Link to="" className="nav-link">Licenses</Link></li>
           <li><Link to="/about" className="nav-link">About</Link></li>
     </ul>
+    
+                        
+                       
   </div>
 
   <div  class="newsletter">
@@ -28,7 +33,7 @@ function Footer(props){
       <h5>Register your parking</h5>
       <p id= "like-text">If you like to contribute our website by making use of your free space.Fill the details in the provided Google Form</p>
       <div class="input-group">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLScpuO0DkUJgNaqGH7pM_KmuEklpAe4c2cRNPMlX3CHouJzCbg/viewform?usp=sf_link"><button type="button"  id= "fill">Google Form</button></a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScpuO0DkUJgNaqGH7pM_KmuEklpAe4c2cRNPMlX3CHouJzCbg/viewform?usp=sf_link"><button type="button"  id= "fill">Register Now</button></a>
       </div>
     </form>
   </div>
