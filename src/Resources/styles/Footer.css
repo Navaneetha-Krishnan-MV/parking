@@ -16,6 +16,7 @@ color: white !important;
   
 }
 
+
 .column {
   flex: 1 1 33%;
   padding: 10px;
@@ -80,7 +81,7 @@ input[type="text"] {
   box-sizing: border-box;
 }
 
-.newsletter button {
+#fill1 {
   border: 1px solid black;
   border-radius: 4px;
   color: black;
@@ -88,12 +89,13 @@ input[type="text"] {
   width: 300px;
   height: 50px;
   margin-top:30px;
+  margin-left: 0px;
   background:  #71f57c;
   transition: 0.3s;
   font-weight: 700;
 
 }
-.newsletter button:hover{
+#fill1{
   background-color: #71f57c;
   color: black;
   font-weight:700;
@@ -135,6 +137,7 @@ button:hover {
     transform: translateY(0);
   }
 }
+
 
 .animate-start {
   animation: slideIn 1s ease-in-out;

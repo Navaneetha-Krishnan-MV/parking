@@ -5,7 +5,6 @@
 
 .background {
     position: relative;
-    background-image: url('../Aboutimages/three.jpg'); 
     background-size: cover;
     background-position: center;
     height: 80vh; 
@@ -202,3 +201,58 @@
     font-size: 0.9em;
     line-height: 1.5;
 }
+
+.about-us2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+   margin-bottom: 100px;
+   margin-top: 100px;
+  }
+  
+  .about-us2-content {
+    flex: 1;
+  
+ 
+  }
+  
+  .about-us2-content h2 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    font-weight: bolder;
+
+  }
+  
+  .about-us2-content p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  .sign-up-btn {
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    width: 200px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .sign-up-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .about-us2-image {
+    flex: 1;
+    text-align: right;
+  }
+  
+  .about-us2-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }

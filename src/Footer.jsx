@@ -32,8 +32,8 @@ function Footer(props){
     <form id= "fill">
       <h5>Register your parking</h5>
       <p id= "like-text">If you like to contribute our website by making use of your free space.Fill the details in the provided Google Form</p>
-      <div class="input-group">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLScpuO0DkUJgNaqGH7pM_KmuEklpAe4c2cRNPMlX3CHouJzCbg/viewform?usp=sf_link"><button type="button"  id= "fill">Register Now</button></a>
+      <div class="input-group" id="register">
+        <a id="register-but" href="https://docs.google.com/forms/d/e/1FAIpQLScpuO0DkUJgNaqGH7pM_KmuEklpAe4c2cRNPMlX3CHouJzCbg/viewform?usp=sf_link"><button type="button"  id= "fill1">Register Now</button></a>
       </div>
     </form>
   </div>

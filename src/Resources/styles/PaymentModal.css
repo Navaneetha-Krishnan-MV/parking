@@ -1,126 +1,131 @@
-/* Background blur overlay */
+
 .background-blur {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   transition: filter 0.3s ease;
   z-index: 998;
   pointer-events: none;
 }
 
 .background-blur.blurred {
-  filter: blur(5px);
+  filter: blur(10px);
 }
 
 /* Modal container */
 .payment-modal {
-  margin-top: -200px;
-  margin-left: 760px;
-  width: 550px;
-  height: auto;
-  background-color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  background-color: #fff;
   border-radius: 12px;
   transform: translate(-50%, -50%);
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
   z-index: 999;
-  overflow: hidden;
-  position: relative;
 }
 
 /* Modal text */
 #paytext {
-  color: black;
+  color: #333;
   text-align: center;
   margin-top: 10px;
-  margin-bottom: 20px;
-  font-size: 24px;
+  margin-bottom: 30px;
+  font-size: 26px;
   font-weight: bold;
+  letter-spacing: 1px;
 }
 
 /* Buttons */
 #bookslots-button, #payment-button, #previous-button, #close-button {
-  color: black;
-  background: transparent;
-  width: 150px;
-  border: 1px solid black;
+  color: white;
+  background: #007BFF;
+  width: 160px;
+  border: none;
   border-radius: 5px;
-  padding: 10px;
+  padding: 12px;
   cursor: pointer;
-  margin-right: 20px;
+  margin-right: 10px;
   text-align: center;
   font-size: 16px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 #bookslots-button:hover, #payment-button:hover, #previous-button:hover, #close-button:hover {
-  background: green;
-  color: white;
+  background: #0056b3;
 }
 
 /* Modal footer buttons container */
 .modal-footer {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 20px;
 }
 
 /* Input fields */
 .input-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .input-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
+  color: #555;
 }
 
 .input-group input,
 .input-group select {
-  width: 100%;
-  padding: 0.5rem;
+  width: calc(100% - 40px);
+  padding: 0.5rem 0.75rem;
   font-size: 1rem;
-  border-radius: 4px;
+  border-radius: 5px;
   border: 1px solid #ccc;
   transition: border-color 0.3s ease;
+  outline: none;
+  margin: auto;
 }
 
 .input-group input:focus,
 .input-group select:focus {
-  border-color: #66afe9;
-  outline: none;
+  border-color: #007BFF;
 }
 
 /* Slot booking area styling */
 .slot-booking-area {
   margin-top: 20px;
-  padding: 10px;
-  background-color: #f9f9f9;
+  padding: 20px;
+  background-color: #f1f1f1;
   border-radius: 8px;
   border: 1px solid #ddd;
 }
 
 .slot-booking-area h2 {
-  margin-bottom: 15px;
-  font-size: 18px;
+  margin-bottom: 20px;
+  font-size: 20px;
   font-weight: bold;
   color: #333;
+  text-align: center;
 }
 
+/* Slots grid styling */
 .slots-grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
   gap: 10px;
+  justify-items: center;
 }
 
+/* Slot styling */
 .slot {
   background-color: #e0e0e0;
-  padding: 10px;
+  padding: 12px;
   text-align: center;
   border-radius: 4px;
   cursor: pointer;
@@ -128,31 +133,30 @@
 }
 
 .slot:hover {
-  background-color: #c0c0c0;
+  background-color: #d0d0d0;
 }
 
 /* Selected slot styling */
 .slot.selected {
-  background-color: green;
+  background-color: #007BFF;
   color: white;
 }
 
 /* Close button styling */
 .close-button {
   position: absolute;
-  top: -30px;
-  left:500px;
-  background: transparent;
+  top: -10px;
+  right: -10px;
+  background: #f44336;
   border: none;
-  font-size: 18px;
-  width:50px;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-  color: black;
+  color: white;
+  border-radius: 50%;
 }
-
 
 .close-button:hover {
-  background: red;
-
+  background: #d32f2f;
 }
-

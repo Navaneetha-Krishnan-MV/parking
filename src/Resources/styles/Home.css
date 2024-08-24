@@ -34,7 +34,6 @@
   z-index: 2;
 }
 
-
 #text{
   position: absolute;
   color: #ffff;
@@ -48,7 +47,7 @@
    left: 0;
    height: 100%;
   width: 100%;
-  background-color: rgba(0, 0, 0,0.1);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
 
@@ -291,7 +290,7 @@ body {
 
 #moving-car {
   position: absolute;
-  top: 395%;
+  top: 585%;
   left: 100px;
   z-index: 2;
   transform: translateY(-50%);
@@ -313,3 +312,293 @@ body {
 }
 
 
+
+
+.center-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.text-section {
+  max-width: 50%;
+  margin-left: 100px;
+}
+
+.text-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.highlight {
+  color: #007bff; /* Blue color to match the button */
+}
+
+.text-section p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.app-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.app-button {
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+#googleplay{
+  background-color:transparent;
+  border: 1px solid black;
+  color: black;
+
+
+
+}
+#appstore{
+  background-color:transparent;
+  border: 1px solid black;
+  color: black;
+
+
+
+}
+
+#googleplay:hover{
+
+   backdrop-filter: blur(10px);
+  background-color:green;
+  color: white;
+
+}
+#appstore:hover{
+  backdrop-filter: blur(10px);
+  background-color:rgb(241, 104, 104);
+  color: white;
+
+}
+
+#blue{
+  width: 800px;
+  height: 500px !important;
+  position: relative;
+}
+
+
+.heroes1 {
+  padding: 50px 20px;
+  text-align: center;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: #333;
+  margin-top: 0px;
+}
+
+.description {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.cards-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.card {
+  background-color:whitesmoke;
+  padding: 20px;
+  width: 300px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+  text-align: left;
+  position: relative;
+  backdrop-filter: blur(200px);
+}
+
+.card-image {
+  width: 140px;
+  height:100px;
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  margin-left: 60px;
+  margin-top: -20px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-top: 60px; 
+  margin-bottom: 10px;
+  margin-left: 60px;
+}
+
+.card-description {
+  font-size: 1rem;
+  color: #666;
+}
+.features-section {
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: max-content;
+}
+
+.features-heading {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.features-paragraph {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.features-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  margin-left: -140px;
+
+}
+
+.feature-box {
+  width: 48%;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-left: 100px;
+}
+
+.seekers-box {
+  background-color: #333;
+  color: #fff;
+}
+
+#fsdiv{
+  background-color: #333;
+  color: #fff !important;
+}
+#ip{
+  color:white;
+}
+#iphead{
+  color:white;
+}
+
+.providers-box {
+  background-color: #f5f5f5;
+  color: #000;
+}
+
+.icon-container {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.green-background {
+  background-color: #00a550;
+}
+
+.gray-background {
+  background-color: #ccc;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+position: relative;
+}
+
+.feature-heading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+#one{
+  position: relative;
+  left:-115px;
+  width: 50px;
+  height: 100px;
+
+}
+#two{
+  position: relative;
+  left:-115px;
+  width: 50px;
+  height: 100px;
+
+}
+#three{
+  position: relative;
+  left:-115px;
+  width: 50px;
+  height: 100px;
+
+}
+
+
+.feature-description {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+#greencar{
+  position: relative;
+  width:500px;
+  height: 300px;
+  left: 900px;
+  top:-480px;
+  border-radius: 12px;
+  background-color: transparent  !important;
+
+}
+#gp{
+  color:white;
+  margin-top: 70px;
+}
+#bluediv{
+  width:400px !important;
+  height: 250px !important;
+  margin-left: 900px;
+  margin-top: -300px;
+}
+#more{
+  background-color: black;
+  width: 150px;
+  font-size: large;
+  height: 40px;
+  margin-left: 100px;
+  border-radius: 9px;
+}
+#full{
+  margin-top: 200px;
+}

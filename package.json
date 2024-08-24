@@ -18,6 +18,7 @@
     "razorpay": "^2.9.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-icons": "^5.3.0",
     "react-native-upi": "^1.0.6",
     "react-native-upi-payment": "^1.0.5",
     "react-router-dom": "^6.26.0",
@@ -29,22 +30,16 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-
-    
-      
-        "build:about": "tailwindcss -i ./src/Resources/styles/About.css -o ./dist/About.css",
-        "build:home": "tailwindcss -i ./src/Resources/styles/Home.css -o ./dist/Home.css",
-        "build:footer": "tailwindcss -i ./src/Resources/styles/Footer.css -o ./dist/Footer.css",
-        "build:header": "tailwindcss -i ./src/Resources/styles/Header.css -o ./dist/Header.css",
-        "build:login": "tailwindcss -i ./src/Resources/styles/login.css -o ./dist/login.css",
-        "build:signin": "tailwindcss -i ./src/Resources/styles/Signin.css -o ./dist/Signin.css",
-        "build:payment-modal": "tailwindcss -i ./src/Resources/styles/PaymentModal.css -o ./dist/PaymentModal.css",
-        "build:district-region": "tailwindcss -i ./src/Resources/styles/DistrictRegion.module.css -o ./dist/DistrictRegion.module.css",
-        "build:css": "concurrently \"npm run build:about\" \"npm run build:home\" \"npm run build:footer\" \"npm run build:header\" \"npm run build:login\" \"npm run build:signin\" \"npm run build:payment-modal\" \"npm run build:district-region\""
-      
-    }
-    
-  ,
+    "build:about": "tailwindcss -i ./src/Resources/styles/About.css -o ./dist/About.css",
+    "build:home": "tailwindcss -i ./src/Resources/styles/Home.css -o ./dist/Home.css",
+    "build:footer": "tailwindcss -i ./src/Resources/styles/Footer.css -o ./dist/Footer.css",
+    "build:header": "tailwindcss -i ./src/Resources/styles/Header.css -o ./dist/Header.css",
+    "build:login": "tailwindcss -i ./src/Resources/styles/login.css -o ./dist/login.css",
+    "build:signin": "tailwindcss -i ./src/Resources/styles/Signin.css -o ./dist/Signin.css",
+    "build:payment-modal": "tailwindcss -i ./src/Resources/styles/PaymentModal.css -o ./dist/PaymentModal.css",
+    "build:district-region": "tailwindcss -i ./src/Resources/styles/DistrictRegion.module.css -o ./dist/DistrictRegion.module.css",
+    "build:css": "concurrently \"npm run build:about\" \"npm run build:home\" \"npm run build:footer\" \"npm run build:header\" \"npm run build:login\" \"npm run build:signin\" \"npm run build:payment-modal\" \"npm run build:district-region\""
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

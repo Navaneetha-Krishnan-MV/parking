@@ -32,6 +32,14 @@ app.get('/api/parking-places', async (req, res) => {
 
 app.post('/api/userprofiledetails', async (req, res) => {
   const { vehicleNo,vehicleCategory, startTime, endTime, bookingDate, profileImg } = req.body;
+  const timeValue = req.body.startTime;
+  const etimeValue = req.body.endTime; // Assuming you're getting this from the request body
+
+  const formattedStartTime = timeValue ? timeValue : null;
+  const formattedTime = etimeValue ? etimeValue : null; // Use null if timeValue is empty
+
+// Proceed with your query, using `formattedTime` instead of `timeValue`
+
 
   try {
       const insertQuery = `
@@ -39,7 +47,7 @@ app.post('/api/userprofiledetails', async (req, res) => {
           VALUES ($1, $2, $3, $4, $5, $6 ) RETURNING *;
       `;
       
-      const values = [vehicleNo,vehicleCategory, startTime, endTime, bookingDate, profileImg];
+      const values = [vehicleNo,vehicleCategory, formattedStartTime, formattedTime, bookingDate, profileImg];
 
       const result = await pool.query(insertQuery, values);
 

@@ -14,15 +14,15 @@
 
 /* Navbar Styling */
 .navbar {
-    color: black; 
+    color: white; 
     height: 80px;
     padding-bottom: 80px;
     margin-top: -10px;
   backdrop-filter: blur(10px);
 
   
-  /* background: #475569; */
-  background: #5A72A0;
+  /* background: #475569; #5A72A0; */
+  background: black;
   box-shadow: 0 4px 6px rgba(121, 96, 231, 0.3); 
 }
 
@@ -64,7 +64,7 @@
 
 .nav-links a {
     text-decoration: none;
-    color: black;
+    color: white;
     font-size: 0.9rem; 
     padding: 0.5rem 0.75rem; 
     border-radius: 5px;
@@ -81,7 +81,7 @@
     left: 0;
     width: 0;
     height: 3px; 
-    background-color : white;
+    background-color : #71f57c;
         transition: width 0.4s; 
 }
 
@@ -92,7 +92,7 @@
 
 
 #main-thing {
-    background-color: white;
+    background-color: transparent;
 }
 
 #main-thing:hover {

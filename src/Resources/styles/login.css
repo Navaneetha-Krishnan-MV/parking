@@ -118,4 +118,10 @@ body {
     width: 100%;
     left:-300px;
   }
+  .password-toggle-icon1{
+    color: black;
+ position: absolute;
+ left:330px;
+ margin-top: 20px;
   
+  }
