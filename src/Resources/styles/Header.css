@@ -12,6 +12,40 @@
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+#headertitle{
+    padding-top: 5px;
+    cursor: pointer;
+    letter-spacing: 5px;
+}
+
+#headertitle span{
+    transition: 0.5s;
+}
+
+#headertitle:hover span:nth-child(1){
+   margin-right: 10px;
+}
+
+#headertitle:hover span:nth-child(2){
+    margin-left: 10px;
+ }
+
+#headertitle:hover span:nth-child(1)::after{
+    content: "-";
+ }
+
+ #headertitle:hover span{
+    color: aqua;
+    text-shadow: 0 0 10px aqua,
+    0 0 20px aqua,
+    0 0 40px aqua,
+    0 0 80px aqua,
+    0 0 120px aqua,
+    0 0 160px aqua;
+
+ }
+
+
 /* Navbar Styling */
 .navbar {
     color: white; 
@@ -93,6 +127,7 @@
 
 #main-thing {
     background-color: transparent;
+    
 }
 
 #main-thing:hover {

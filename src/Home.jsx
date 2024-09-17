@@ -189,18 +189,23 @@
 // }
 
 // export default HomeBody;
+  //import videobg from "./Resources/homebg1.mp4";
+
 
 import React from "react";
-import videobg from "./Resources/homebg1.mp4"
+
 import "./Resources/styles/Home.css";
 import image1 from "./Resources/What-is-a-Smart-Parking-System.png";
+import startimg from "./Resources/Aboutimages/threegraphics.png";
 import videobg2 from "./Resources/Nice-Video.mp4";
 import carscooty from "./Resources/CarScooty.gif";
 // import parkingicons from "./Resources/parking-icon1.png";
-import roadcar from "./Resources/Roadforcar.gif";
+// import roadcar from "./Resources/Roadforcar.gif";
 import rightimg from "./Resources/leftaligned.png";
 import o from "./Resources//Aboutimages/book.png";
 import op from "./Resources//Aboutimages/hservice.png";
+// import up from "./Resources//Aboutimages/book.png";
+
 import CarIcon from './Resources/Aboutimages/aboutright.webp'; // Assuming you have a car icon SVG file
 import ParkingIcon from './Resources/Aboutimages/aboutright.webp'; // Assuming you have a car icon SVG file
 
@@ -219,33 +224,30 @@ import 'aos/dist/aos.css';
 
 function HomeBody(){
 
-  React.useEffect(() => {
-    const handleScroll = () => {
-      const text = document.getElementById('text');
-      const video = document.querySelector('.homebody video');
-      let value = window.scrollY;
-      let maxScroll = video.getBoundingClientRect().height - text.getBoundingClientRect().height;
-      text.style.marginTop = Math.min(value * 2.5, maxScroll) + 'px';
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
- 
+  
   AOS.init();
   
   return (
   
     <div id="totalhome">
-    <div className="homebody">
-      <div className="overlay"></div>
-      <video src={videobg} autoPlay loop muted  />
-      <div className="content">
-        <h1 id="text">Smart Parking Solution</h1>
+     <div className="flex flex-col md:flex-row items-center justify-between p-6 bg-gray-200 text-gray-800 min-h-screen" id="firsthome">
+      <div className="text-center md:text-left max-w-md md:w-1/2 ml-9">
+        <h1 className="text-6xl font-extrabold mb-4 text-gray-900">
+          ParkPuram
+        </h1>
+        <p className="text-xl mb-6 text-gray-700">
+          Your smart parking solution, making parking easier and more efficient.
+        </p>
+        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
+          Go HERE
+        </button>
+      </div>
+      <div className="w-full md:w-1/2 mt-6 md:mt-0">
+        <img
+          src={image1}
+          alt="Parking Illustration"
+          className="w-full h-auto object-cover rounded-lg"
+        />
       </div>
     </div>
 
@@ -268,7 +270,7 @@ function HomeBody(){
               </p>
          </div>
          <div class="heroes__image-container"  data-aos="zoom-in"  data-aos-duration="1000">
-           <img src={image1} alt="Example img" class="heroes__responsive-image"/>
+           <img src={startimg} alt="Example img" class="heroes__responsive-image"/>
          </div>
     </div> 
 
@@ -390,7 +392,7 @@ function HomeBody(){
       <video src={videobg2} autoPlay loop muted id="videotwo" />
     </div>
 
-    <div class="jumbotron">
+    <div class="jumbotron" >
     <div class="content-container">
       <br />
       <br />
@@ -407,9 +409,9 @@ function HomeBody(){
 </div></div>
 
 
-    <div class="carsc" data-aos=""  data-aos-duration="3000">
+    {/* <div class="carsc" data-aos=""  data-aos-duration="3000">
         <img src={roadcar} alt="road car" id="moving-road" />
-    </div>
+    </div> */}
 
 
 
@@ -418,85 +420,110 @@ function HomeBody(){
 
 
 
-    
 
-    <div className="container mx-auto p-6 flex flex-wrap" id="full">
-      <div className="left-section w-full md:w-7/12 pr-4">
-        <h1 className="text-5xl font-bold mb-6"  data-aos="zoom-out"  data-aos-duration="1500" >Your Opinion</h1>
-       
-        <div className="black-box bg-gray-800 text-white p-6 rounded-lg mt-6 relative">
-          <img src={CarIcon} alt="Car Icon" className="mb-4 mx-auto" />
-          <h2 className="text-2xl font-semibold mb-4">Parking space seekers</h2>
-          <p className="text-lg">
-            A parking space seeker can find parking immediately or schedule it for later. When registering, users provide vehicle type information. They can register multiple vehicles. To start a session, seekers simply enter the desired duration and select a vehicle if they have more than one.
-          </p>
-
+    <div className="bg-gray-900 mt-40 text-white py-16">
+      <div className="max-w-6xl mx-auto text-center">
+        <h2 className="text-3xl font-semibold mb-8">
+          We Take Pride in Our Numbers
+        </h2>
         
-          <div className="max-w-lg mx-auto p-6 bg-gray-900 rounded-lg mt-10">
-            <h2 className="text-2xl font-bold text-center text-gray-300 mb-4">We Value Your Feedback</h2>
-            <p className="text-center text-gray-400 mb-6">Please let us know how we can improve our service.</p>
-            
-            <form className="space-y-6">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-300">Your Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="mt-1 p-2 w-full border border-gray-600 rounded-md bg-gray-800 text-gray-300"
-                  placeholder="your-email"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="feedback" className="block text-sm font-medium text-gray-300">Your Feedback</label>
-                <textarea
-                  id="feedback"
-                  name="feedback"
-                  rows="4"
-                  className="mt-1 p-2 w-full border border-gray-600 rounded-md bg-gray-800 text-gray-300"
-                  placeholder="Your feedback message"
-                  required
-                />
-              </div>
-              
-              <div>
-                <button
-                  type="button"
-                  className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
-                  disabled
-                >
-                  Send Feedback
-                </button>
-              </div>
-            </form>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
+          <div>
+            <p className="text-5xl font-bold text-red-400">15</p>
+            <p className="mt-2">Years of Experience</p>
+          </div>
+          
+          <div>
+            <p className="text-5xl font-bold text-red-400">10K</p>
+            <p className="mt-2">Business Partners</p>
+          </div>
+          
+          {/* <div>
+            <p className="text-5xl font-bold text-red-400">25M</p>
+            <p className="mt-2">Products Installed</p>
+          </div> */}
+          
+          <div>
+            <p className="text-5xl font-bold text-red-400">22</p>
+            <p className="mt-2">Countries Worldwide</p>
+          </div>
+          
+          <div>
+            <p className="text-5xl font-bold text-red-400">5</p
+          >
+            <p className="mt-2">Industry Awards</p>
           </div>
         </div>
-        
-
-      </div>
-      
-
-      <div className="grey-box bg-gray-100 text-center p-6 rounded-lg w-full md:w-5/12 mt-6 md:mt-0" >
-        <img src={ParkingIcon} alt="Parking Icon" className="mb-4 mx-auto" />
-        <h2 className="text-2xl font-semibold mb-4">Parking space providers</h2>
-        <p className="text-lg text-gray-700 mb-6">A person can be both a space provider and a parking seeker. To offer a space, he simply enters details like the address, allowed vehicle types, availability of a charging station, and other amenities within the app.</p>
-        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-full hover:bg-blue-600 transition duration-300">Get Started</button>
       </div>
     </div>
 
 
 
-    <div className="bg-blue-500 text-white p-6 rounded-lg border border-blue-700" id="bluediv">
-  <p className="text-lg text-gray-200 mb-6" id="bluepara">
-    The goal of the app is to connect individuals who would like to rent out their unused parking space (parking space providers) with drivers who are looking for a parking space (parking space seekers).
-  </p>
-  <button id="more" class="text-2xl font -bold" > More info </button>
-</div>
 
 
-    <div class="main-container">
+
+
+
+    <div className="bg-gray-800 text-white min-h-screen flex flex-col justify-center items-center" id="move">
+      <div className="max-w-4xl mx-auto p-6">
+        <h1 className="text-4xl font-bold mb-6 animate-shine bg-gradient-to-l from-gray-700 via-white to-gray-700 bg-[length:300%] bg-clip-text text-transparent">
+          Manage Your Parking Spaces Efficiently
+        </h1>
+        <p className="text-lg mb-12">
+          Optimize and modernize your parking facility with our cutting-edge solutions. Simplify vehicle management and provide a seamless experience for your customers.
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-gray-700 p-6 rounded-lg">
+            <div className="text-blue-500 text-3xl mb-4 animate-bounce">
+              🚗
+            </div>
+            <h2 className="text-xl font-semibold mb-2">Smart Parking Systems</h2>
+            <p>
+              Implement intelligent parking systems that reduce congestion and improve the overall flow of vehicles.
+            </p>
+          </div>
+          
+          <div className="bg-gray-700 p-6 rounded-lg">
+            <div className="text-red-500 text-3xl mb-4 animate-bounce">
+              📊
+            </div>
+            <h2 className="text-xl font-semibold mb-2">Analytics & Optimization</h2>
+            <p>
+              Gain insights into parking patterns and optimize space utilization for better efficiency.
+            </p>
+          </div>
+          
+          <div className="bg-gray-700 p-6 rounded-lg">
+            <div className="text-green-500 text-3xl mb-4 animate-bounce">
+              📱
+            </div>
+            <h2 className="text-xl font-semibold mb-2">Mobile App Integration</h2>
+            <p>
+              Allow users to find, reserve, and pay for parking spaces with ease using our mobile app integration.
+            </p>
+          </div>
+          
+          <div className="bg-gray-700 p-6 rounded-lg">
+            <div className="text-yellow-500 text-3xl mb-4 animate-bounce">
+              🚀
+            </div>
+            <h2 className="text-xl font-semibold mb-2">Fast Entry & Exit</h2>
+            <p>
+              Use automated systems for quick entry and exit, reducing wait times and improving customer satisfaction.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+<div class="main-container">
     <div class="hero-section">
       <div class="image-container" data-aos="fade-left"  data-aos-duration="2200">
         <img src={rightimg} class="responsive-image" alt="Bootstrap Themes"/>
@@ -508,7 +535,7 @@ function HomeBody(){
     </div>
     </div>
     
-
+   
   </div>
   );
 }

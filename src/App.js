@@ -7,6 +7,9 @@ import Home from "./Home";
 import Signin from "./signin"; 
 import About from "./about";// Assuming you have a Home component
 import Main from "./main";
+import Help from "./Help.jsx";
+import TermsandServices from "./TermsandServices.jsx";
+import UserProfile from "./UserProfile.jsx";
 
 const App = () => {
 
@@ -17,6 +20,11 @@ const App = () => {
       <Header></Header>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/Help" element={<Help />} />
+        <Route path="/TermsandServices" element={<TermsandServices />} />
+        <Route path="/UserProfile" element={<UserProfile />} />
+
+
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Wholelogin />} />
         <Route path="/main" element={<Main />} />

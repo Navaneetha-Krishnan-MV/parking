@@ -1,146 +1,140 @@
-/* DistrictRegionSelector.module.css */
-body{
-    background-color: transparent;
-    
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .container {
-    margin: 1rem auto;
-    max-width: 800px;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.imageAndFormContainer {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    flex-wrap: wrap; 
+}
+
+.imageContainer {
+    flex: 1;
+    max-width: 300px;
+    margin-right: 20px;
+    margin-bottom: 20px; 
+}
+
+.image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px; /* Optional: add rounded corners */
+}
+
+.formContainer {
+    flex: 2;
+    max-width: calc(100% - 320px);
+    overflow: hidden;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    margin-bottom: 20px;
 }
 
 .dropdownContainer {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .dropdown {
-    margin-bottom: 1rem;
-}
-
-.dropdown label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .dropdown select {
     width: 100%;
-    padding: 0.5rem;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-}
-
-.results {
-    margin-top: 1rem;
-    color: #555;
-    font-style: italic;
+    box-sizing: border-box;
 }
 
 .title {
-    margin-left: 2rem;
-    font-size: 1.5rem;
-    background-color: yellow;
-    color: black;
-    padding: 10px;
-    border-radius: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.results {
+    padding: 20px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px; 
 }
 
 .details {
-    margin-top: 1rem;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-}
-
-.details h2 {
-    margin-bottom: 1rem;
-    color: #333;
+    padding: 20px;
 }
 
 .parkingDetails {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 20px;
 }
 
 .parkingItem {
-    padding: 1rem;
+    background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fafafa;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    flex-basis: 48%;
-    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: calc(50% - 20px); 
+    box-sizing: border-box;
 }
 
-.parkingItem:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+.parkingItem.left {
+    align-self: flex-start;
 }
 
-.parkingItem h3 {
-    margin-top: 0;
-    color: #333;
-}
-
-.parkingItem p {
-    margin: 0.5rem 0;
+.parkingItem.right {
+    align-self: flex-end;
 }
 
 .bookButton {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 5px;
     background-color: #007bff;
     color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
     cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease; 
 }
 
 .bookButton:hover {
     background-color: #0056b3;
 }
 
-.left {
-    animation: fadeInLeft 1s;
+
+
+.details h2 {
+    margin-bottom: 1rem;
+    color: #333;
+    font-size: 1.75rem; 
 }
 
-.right {
-    animation: fadeInRight 1s;
+#balance {
+    height: 300px !important;
+    margin-bottom: 20px; 
 }
 
-@keyframes fadeInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes fadeInRight {
-    from {
-        opacity: 0;
-        transform: translateX(50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+.dropdown label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
 }

@@ -28,6 +28,26 @@ app.get('/api/parking-places', async (req, res) => {
   }
 });
 
+// Add this route in your server.js
+app.get('/api/user-details', async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    const result = await pool.query('SELECT display_name FROM registration WHERE email = $1', [email]);
+    
+    if (result.rows.length > 0) {
+      res.json({ success: true, displayName: result.rows[0].display_name });
+    } else {
+      res.json({ success: false, message: 'User not found' });
+    }
+  } catch (err) {
+    console.error('Error fetching user details:', err);
+    res.status(500).send('Server error');
+  }
+});
+
+
+
 
 
 app.post('/api/userprofiledetails', async (req, res) => {
@@ -138,6 +158,87 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
+// Register new user or update existing profile details
+app.post('/api/profiledetails', async (req, res) => {
+  const { name, email, phoneNumber, dob, gender, address } = req.body;
+
+  try {
+    // Check if user profile already exists
+    const userCheck = await pool.query('SELECT * FROM user_profile_details WHERE email = $1', [email]);
+
+    if (userCheck.rows.length > 0) {
+      // If profile exists, update it
+      const updateQuery = `
+        UPDATE user_profile_details
+        SET name = $1, phone_number = $2, dob = $3, gender = $4, address = $5
+        WHERE email = $6 RETURNING *;
+      `;
+      const values = [name, phoneNumber, dob, gender, address, email];
+      const result = await pool.query(updateQuery, values);
+
+      res.status(200).json({ success: true, userProfile: result.rows[0] });
+    } else {
+      // If profile does not exist, insert new record
+      const insertQuery = `
+        INSERT INTO user_profile_details (name, email, phone_number, dob, gender, address)
+        VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
+      `;
+      const values = [name, email, phoneNumber, dob, gender, address];
+      const result = await pool.query(insertQuery, values);
+
+      res.status(201).json({ success: true, userProfile: result.rows[0] });
+    }
+  } catch (err) {
+    console.error('Error handling profile details:', err);
+    res.status(500).json({ success: false, message: 'Error handling profile details' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Delete user profile details
+app.delete('/api/delete-profile-details/:email', async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const query = `
+      DELETE FROM user_profile_details
+      WHERE email = $1
+      RETURNING *;
+    `;
+    const result = await pool.query(query, [email]);
+
+    if (result.rowCount > 0) {
+      res.status(200).json({ success: true, message: 'Profile details deleted successfully.' });
+    } else {
+      res.status(404).json({ success: false, message: 'Profile details not found.' });
+    }
+  } catch (err) {
+    console.error('Error deleting profile details:', err);
+    res.status(500).json({ success: false, message: 'Error deleting profile details' });
+  }
+});
+
   
 
   const PORT = process.env.PORT || 5000;
@@ -151,3 +252,35 @@ app.post('/api/login', async (req, res) => {
 
 
 
+// Delete profile details
+// app.post('/api/profiledetails', async (req, res) => {
+//   const { name, email, phoneNumber, dob, gender, address } = req.body;
+
+//   try {
+//     // Check if user profile already exists
+//     const userCheck = await pool.query('SELECT * FROM user_profile_details WHERE email = $1', [email]);
+//     if (userCheck.rows.length > 0) {
+//       // Update existing user profile details
+//       const updateQuery = `
+//         UPDATE user_profile_details
+//         SET name = $1, phone_number = $2, dob = $3, gender = $4, address = $5
+//         WHERE email = $6 RETURNING *;
+//       `;
+//       const values = [name, phoneNumber, dob, gender, address, email];
+//       const result = await pool.query(updateQuery, values);
+//       res.status(200).json({ success: true, userProfile: result.rows[0] });
+//     } else {
+//       // Insert new user profile details
+//       const insertQuery = `
+//         INSERT INTO user_profile_details (name, email, phone_number, dob, gender, address)
+//         VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
+//       `;
+//       const values = [name, email, phoneNumber, dob, gender, address];
+//       const result = await pool.query(insertQuery, values);
+//       res.status(200).json({ success: true, userProfile: result.rows[0] });
+//     }
+//   } catch (err) {
+//     console.error('Error saving user profile details:', err);
+//     res.status(500).json({ success: false, message: 'Error saving user profile details' });
+//   }
+// });

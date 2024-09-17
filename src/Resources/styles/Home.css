@@ -14,6 +14,9 @@
   width: 100%;
   height: 100vh;
 }
+#move{
+  margin-top: 0px;
+}
 
 .homebody video {
   height: 100%;
@@ -290,7 +293,7 @@ body {
 
 #moving-car {
   position: absolute;
-  top: 585%;
+  top: 568%;
   left: 100px;
   z-index: 2;
   transform: translateY(-50%);
@@ -422,6 +425,8 @@ body {
   margin-top: 50px;
 }
 
+
+
 .card {
   background-color:whitesmoke;
   padding: 20px;
@@ -547,21 +552,21 @@ position: relative;
   position: relative;
   left:-115px;
   width: 50px;
-  height: 100px;
+  height: 50px;
 
 }
 #two{
   position: relative;
   left:-115px;
   width: 50px;
-  height: 100px;
+  height: 50px;
 
 }
 #three{
   position: relative;
   left:-115px;
   width: 50px;
-  height: 100px;
+  height: 50px;
 
 }
 
@@ -577,8 +582,6 @@ position: relative;
   height: 300px;
   left: 900px;
   top:-480px;
-  border-radius: 12px;
-  background-color: transparent  !important;
 
 }
 #gp{
