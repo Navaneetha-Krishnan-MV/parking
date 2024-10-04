@@ -12,6 +12,15 @@
   pointer-events: none;
 }
 
+.slot.booked {
+  background-color: gray;
+  cursor: not-allowed;
+}
+.slot.selected {
+  background-color: green;
+  color: white;
+}
+
 .background-blur.blurred {
   filter: blur(5px);
 }

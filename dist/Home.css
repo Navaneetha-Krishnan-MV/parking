@@ -873,7 +873,7 @@ body {
   font-size: 1.25rem;
 }
 
-#moving-road {
+/* #moving-road {
   width: 99%;
   height: 200px;
   padding-left: 200px;
@@ -899,7 +899,7 @@ body {
   100% {
     left: 59%;
   }
-}
+} */
 
 #over {
   width: 400px;
