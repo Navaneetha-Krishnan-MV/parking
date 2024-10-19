@@ -1,9 +1,10 @@
 import { initializeApp } from "firebase/app";
 import {getAuth,GoogleAuthProvider} from "firebase/auth";
 
+require('dotenv').config();
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAIKWcg79R1FY9D6AxJCpiJM17LcmyHGqk",
+  apiKey: process.env.API_KEY,
   authDomain: "parkpuram.firebaseapp.com",
   projectId: "parkpuram",
   storageBucket: "parkpuram.appspot.com",
