@@ -1,62 +1,3 @@
-// import React from "react";
-// import "./Resources/styles/About.css";
-// import icon from "./Resources/parking-icon1.png";
-// import service1 from "./Resources/Aboutimages/ser1.png"; // Import images for services
-// import service2 from "./Resources//Aboutimages/ser2.png";
-// import service3 from "./Resources/Aboutimages/service-3.png";
-
-// function About() {
-//     return (
-//         <div className="about-container">
-//             <div className="background">
-//                 <div className="content">
-//                     <img className="icon" src={icon} alt="Logo" width="60" height="60" />
-//                     <p className="description">
-//                         Lorem ipsum dolor sit amet consectetur adipi<br></br>
-//                         sicing elit. Possimus temporibus<br></br>
-//                         numquam totam quae laudantium sed? Praesentium expedita <br></br>
-//                         dolorem debitis suscipit.
-//                     </p>
-//                     <button className="get-started-btn">Get Started</button>
-//                 </div>
-//             </div>
-//             <div className="about-us">
-//                 <h2>About Us</h2>
-//                 <div className="line"></div>
-//                 <p className="about-paragraph">
-//                     We are dedicated to providing the best services to our customers. Our team of professionals is committed to ensuring your satisfaction with every interaction.
-//                 </p>
-//             </div>
-//             <div className="services">
-//                 <div className="service-item">
-//                     <img src={service1} alt="Professional Service" className="service-icon" />
-//                     <h3>Professional Service</h3>
-//                     <p>Offering top-notch professional services to meet your needs.</p>
-//                 </div>
-//                 <div className="service-item">
-//                     <img src={service2} alt="Security" className="service-icon" />
-//                     <h3>Security</h3>
-//                     <p>Ensuring your safety with our state-of-the-art security solutions.</p>
-//                 </div>
-//                 <div className="service-item">
-//                     <img src={service3} alt="Another Service" className="service-icon" />
-//                     <h3>Another Service</h3>
-//                     <p>Providing additional services tailored to your requirements.</p>
-//                 </div>
-//             </div>
-
-//             <div className="about-us">
-//             <h2>Why we are Best ..?</h2> </div>
-            
-//         </div>
-//     );
-// }
-
-// export default About;
-
-
-
-
 
 import React from "react";
 import { Link } from 'react-router-dom';
@@ -89,7 +30,7 @@ function About() {
           About us
         </h1>
         <p className="text-lg text-gray-700 mb-6">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Our parking slot booking app offers a simple, secure, and hassle-free way to reserve parking spots. With real-time availability and easy booking, we ensure a smooth experience. Your convenience and vehicle's safety are our priority.
         </p>
         <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
           Learn More
@@ -175,8 +116,8 @@ function About() {
         <h2>About Us</h2>
         <p>
           We are committed to providing the best services to our customers. Join us to be part of an exciting journey.<br />
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Non voluptatum odit natus soluta totam.<br />
-          Saepe doloribus temporibus dolor aliquid iure.
+          Don't wait get started today by booking your parking slot<br />
+          We ensures that you have a stress free parking experience
         </p>
     
         <button className="sign-up-btn">

@@ -158,3 +158,22 @@
   background: #d32f2f;
   
 }
+
+.booking-confirmation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: lightgreen;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  z-index: 1000;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+}
+
+.booking-confirmation.hidden {
+  opacity: 0;
+}

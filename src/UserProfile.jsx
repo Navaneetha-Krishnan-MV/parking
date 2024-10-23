@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import PaymentModal from "./PaymentModal.jsx";
 
 const UserProfile = () => {
   const [name, setName] = useState('');
@@ -8,11 +9,11 @@ const UserProfile = () => {
   const [dob, setDob] = useState('');
   const [gender, setGender] = useState('');
   const [address, setAddress] = useState('');
+  const [nameStore, setNameStore] = useState(''); // State variable to store the email
 
   const location = useLocation();
 
   useEffect(() => {
-    // Retrieve email from location state
     const { email } = location.state || {};
     if (email) {
       setEmail(email);
@@ -20,7 +21,10 @@ const UserProfile = () => {
   }, [location.state]);
 
   const handleSave = async () => {
-    const userProfile = { name, email1, phoneNumber, dob, gender, address };
+    // Store the email to the nameStore variable
+    setNameStore(email1); 
+
+    const userProfile = { name, email1, phoneNumber, dob, gender, address }; // Use name instead of nameStore
 
     try {
       const response = await fetch('http://localhost:5000/api/profiledetails', {
@@ -62,98 +66,100 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-start py-10">
-      <div className="bg-white shadow-lg rounded-lg w-full max-w-2xl">
-        <div className="border-b border-gray-200 px-6 py-4">
-          <h1 className="text-2xl font-semibold">About me</h1>
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center py-12">
+      <div className="bg-white shadow-xl rounded-lg w-full max-w-3xl">
+        <div className="border-b border-gray-200 px-8 py-6">
+          <h1 className="text-3xl font-bold text-gray-800">About me</h1>
           <p className="text-sm text-gray-600 mt-2">
             Manage your personal info and control who can see it when you use your main Google Account profile across Google services.
           </p>
         </div>
 
-        <div className="px-6 py-4">
-          <h2 className="text-lg font-medium text-gray-800 mb-4">Basic info</h2>
+        <div className="px-8 py-6">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Basic info</h2>
 
-          {/* Email (predefined) */}
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-semibold mb-1">{email1}</label>
-            <p className="text-black"> up</p>
-          </div>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-1">{email1}</label>
+              <p className="text-gray-900 font-semibold">
+                
+                <PaymentModal email={email1}/>
+              </p>
+            </div>
 
-          {/* Input for Name */}
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-semibold mb-1">Name</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-gray-900"
-            />
-          </div>
+            <div>
+              <label htmlFor="name" className="block text-gray-700 text-sm font-medium mb-1">Name</label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your name"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
 
-          {/* Input for Phone Number */}
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-semibold mb-1">Phone Number</label>
-            <input
-              type="text"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              placeholder="Enter your phone number"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-gray-900"
-            />
-          </div>
+            <div>
+              <label htmlFor="phoneNumber" className="block text-gray-700 text-sm font-medium mb-1">Phone Number</label>
+              <input
+                id="phoneNumber"
+                type="text"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="Enter your phone number"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
 
-          {/* Input for Profile Picture */}
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-semibold mb-1">Profile picture</label>
-            <div className="flex items-center">
-              <div className="h-12 w-12 bg-gray-300 rounded-full flex justify-center items-center text-gray-700 text-xl font-bold">
-                {name ? name.charAt(0) : 'R'}
-              </div>
-              <button className="ml-4 text-blue-500 text-sm font-semibold">Add a profile picture to personalize your account</button>
+            <div>
+              <label htmlFor="dob" className="block text-gray-700 text-sm font-medium mb-1">Birthday</label>
+              <input
+                id="dob"
+                type="date"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="gender" className="block text-gray-700 text-sm font-medium mb-1">Gender</label>
+              <input
+                id="gender"
+                type="text"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                placeholder="Enter your gender"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="address" className="block text-gray-700 text-sm font-medium mb-1">Address</label>
+              <input
+                id="address"
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Enter your address"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-blue-500 focus:border-blue-500"
+              />
             </div>
           </div>
 
-          {/* Input for DOB */}
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-semibold mb-1">Birthday</label>
-            <input
-              type="date"
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-gray-900"
-            />
-          </div>
-
-          {/* Input for Gender */}
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-semibold mb-1">Gender</label>
-            <input
-              type="text"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              placeholder="Enter your gender"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-gray-900"
-            />
-          </div>
-
-          {/* Input for Address */}
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-semibold mb-1">Address</label>
-            <input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder="Enter your address"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-gray-900"
-            />
-          </div>
-
-          {/* Save and Delete Buttons */}
-          <div className="flex justify-end space-x-4">
-            <button onClick={handleDelete} className="px-4 py-2 bg-red-500 text-white rounded">Delete</button>
-            <button onClick={handleSave} className="px-4 py-2 bg-blue-500 text-white rounded">Save</button>
+          <div className="flex justify-end space-x-4 mt-8">
+            <button 
+              onClick={handleDelete} 
+              className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
+            >
+              Delete
+            </button>
+            <button 
+              onClick={handleSave} 
+              className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>
