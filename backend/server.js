@@ -1,12 +1,15 @@
 import express, { json } from 'express';
 import pkg from 'pg';
 import cors from 'cors';
+import nodemailer from 'nodemailer';
+import PDFDocument from 'pdfkit';
+
 
 const { Pool } = pkg;
 const app = express();
 const port = 5000;
 
-// Database connection configuration
+
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -15,31 +18,14 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Middleware
+// const pool = new Pool({
+//   connectionString: process.env.POSTGRES_URL,
+// })
+
 app.use(cors());
 app.use(json());
 
 
-// // Route to fetch available slots
-// app.get('/api/slots', (req, res) => {
-//   const { placeName, vehicleCategory } = req.query;
-
-//   if (!placeName || !vehicleCategory) {
-//     return res.status(400).json({ success: false, message: 'placeName and vehicleCategory are required' });
-//   }
-
-//   const placeSlots = slots[placeName];
-//   if (!placeSlots) {
-//     return res.status(404).json({ success: false, message: 'Parking place not found' });
-//   }
-
-//   const categorySlots = placeSlots[vehicleCategory];
-//   if (!categorySlots) {
-//     return res.status(404).json({ success: false, message: 'Vehicle category not found' });
-//   }
-
-//   res.status(200).json({ success: true, slots: categorySlots });
-// });
 app.get('/api/slots', async (req, res) => {
   const { placeName, vehicleCategory } = req.query;
 
@@ -47,7 +33,7 @@ app.get('/api/slots', async (req, res) => {
     return res.status(400).json({ success: false, message: 'placeName and vehicleCategory are required' });
   }
 
-  const tableName = placeName.replace(/ /g, '_'); // Replace spaces with underscores
+  const tableName = placeName.replace(/ /g, '_'); 
 
   try {
     const query = `
@@ -72,7 +58,7 @@ app.get('/api/slots', async (req, res) => {
 });
 
 
-// Get all parking places
+
 app.get('/api/parking-places', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM parking_places');
@@ -84,7 +70,7 @@ app.get('/api/parking-places', async (req, res) => {
 });
 
 
-// Get user details by email
+
 app.get('/api/user-details', async (req, res) => {
   const { email } = req.query;
 
@@ -111,7 +97,7 @@ app.post('/api/userprofiledetails', async (req, res) => {
     return res.status(400).json({ success: false, message: 'All fields are required' });
   }
 
-  const tableName = placeName.replace(/ /g, '_'); // Replace spaces with underscores
+  const tableName = placeName.replace(/ /g, '_'); 
   
   
   try {
@@ -120,7 +106,7 @@ app.post('/api/userprofiledetails', async (req, res) => {
     } else if (vehicleCategory === "Four Wheeler") {
       await pool.query('UPDATE parking_places SET afcapacity = afcapacity - 1 WHERE name = $1', [placeName]);
     }
-    // Insert user profile details into the database
+   
     const insertQuery = `
       INSERT INTO vehcileemaildetails (place_name, vehicle_no, vehicle_category, start_time, end_time, booking_date, slot, profile_img, email)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;
@@ -131,7 +117,7 @@ app.post('/api/userprofiledetails', async (req, res) => {
 
     console.log('User profile details saved:', result.rows[0]);
 
-    // Update the slot status to 'Booked'
+    
     const updateSlotQuery = `
       UPDATE ${tableName}
       SET status = 'Booked'
@@ -156,10 +142,10 @@ app.delete('/api/deleteslot', async (req, res) => {
     return res.status(400).json({ success: false, message: 'placeName, slotNo, and vehicleCategory are required' });
   }
 
-  const tableName = placeName.replace(/ /g, '_'); // Replace spaces with underscores
+  const tableName = placeName.replace(/ /g, '_'); 
 
   try {
-    // Delete from vehcileemaildetails
+    
     const deleteQuery = `
       DELETE FROM vehcileemaildetails
       WHERE place_name = $1 AND slot = $2 RETURNING *;
@@ -171,7 +157,7 @@ app.delete('/api/deleteslot', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Slot not found' });
     }
 
-    // Update the slot status to 'Available'
+
     const updateSlotQuery = `
       UPDATE ${tableName}
       SET status = 'Available'
@@ -180,7 +166,6 @@ app.delete('/api/deleteslot', async (req, res) => {
     const updateSlotValues = [vehicleCategory, slotNo];
     await pool.query(updateSlotQuery, updateSlotValues);
 
-    // Update the capacity based on vehicle category
     if (vehicleCategory === "Two Wheeler") {
       await pool.query('UPDATE parking_places SET atcapacity = atcapacity + 1 WHERE name = $1', [placeName]);
     } else if (vehicleCategory === "Four Wheeler") {
@@ -196,7 +181,6 @@ app.delete('/api/deleteslot', async (req, res) => {
 
 
 
-// User registration
 app.post('/api/registration', async (req, res) => {
   const { email, displayName } = req.body;
   console.log("Received registration request:", email, displayName);
@@ -220,7 +204,7 @@ app.post('/api/registration', async (req, res) => {
   }
 });
 
-// User login
+
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -230,7 +214,6 @@ app.post('/api/login', async (req, res) => {
     if (result.rows.length > 0) {
       const user = result.rows[0];
 
-      // Check if the password matches
       if (user.password === password) {
         console.log("Login matches perfect");
         res.json({ success: true, user });
@@ -287,7 +270,7 @@ app.post('/api/profiledetails', async (req, res) => {
 
       res.status(200).json({ success: true, userProfile: result.rows[0] });
     } else {
-      // Insert new user profile
+     
       const insertQuery = `
         INSERT INTO user_profile_details (name, email, phone_number, dob, gender, address)
         VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
@@ -303,7 +286,7 @@ app.post('/api/profiledetails', async (req, res) => {
   }
 });
 
-// Delete user profile details
+
 app.delete('/api/delete-profile-details/:email', async (req, res) => {
   const { email } = req.params;
 
@@ -330,27 +313,29 @@ app.delete('/api/delete-profile-details/:email', async (req, res) => {
 app.post('/api/bookings-by-email', async (req, res) => {
   const { email } = req.body;
 
-  // Validate the email input
   if (!email || typeof email !== 'string') {
     return res.status(400).json({ success: false, message: 'Invalid email provided' });
   }
 
   try {
-    // Query to fetch bookings by email
+
+    l
     const query = 'SELECT * FROM vehcileemaildetails WHERE email = $1';
     const values = [email];
 
     const result = await pool.query(query, values);
 
     if (result.rows.length > 0) {
-      // Send success response with bookings
+      
       res.json({ success: true, bookings: result.rows });
     } else {
-      // No bookings found for the provided email
+      l
       res.json({ success: false, message: 'No bookings found for this email' });
     }
   } catch (err) {
-    // Log the error and send error response
+
+    //
+
     console.error('Error fetching booking details:', err);
     res.status(500).json({ success: false, message: 'Error fetching booking details. Please try again later.' });
   }
@@ -377,7 +362,63 @@ app.post('/api/bookings-by-email', async (req, res) => {
   }
 });
 
-// Start the server
+
+
+app.post('/send-booking-email', (req, res) => {
+  const { placeName, vehicleNo, vehicleCategory, startTime, endTime, bookingDate, slot, email } = req.body;
+
+  console.log('Received booking details:', req.body); 
+
+  const doc = new PDFDocument();
+  let buffers = [];
+  doc.on('data', buffers.push.bind(buffers));
+  doc.on('end', () => {
+      let pdfData = Buffer.concat(buffers);
+
+      let transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+              user: 'parkpuram7@gmail.com',
+              pass: 'vznfgdwkvauaiomn'
+          }
+      });
+
+      let mailOptions = {
+          from: 'parkpuram7@gmail.com',
+          to: email,
+          subject: 'Booking Confirmation',
+          text: 'Your booking details are attached in the PDF.',
+          attachments: [
+              {
+                  filename: 'booking-details.pdf',
+                  content: pdfData
+              }
+          ]
+      };
+
+
+transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+      console.error('Error sending email:', error); // Log error
+      return res.status(500).send(error.toString());
+  }
+  console.log('Email sent:', info.response); // Log success
+  res.status(200).send('Email sent: ' + info.response);
+});
+});
+
+doc.fontSize(25).text('Booking Details', { align: 'center' });
+doc.moveDown();
+doc.fontSize(16).text(`Parking Place: ${placeName}`);
+doc.text(`Vehicle Number: ${vehicleNo}`);
+doc.text(`Vehicle Category: ${vehicleCategory}`);
+doc.text(`Start Time: ${startTime}`);
+doc.text(`End Time: ${endTime}`);
+doc.text(`Booking Date: ${bookingDate}`);
+doc.text(`Slot Number: ${slot}`);
+doc.end();
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

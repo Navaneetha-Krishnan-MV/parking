@@ -2,6 +2,43 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Resources/styles/PaymentModal.css";
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString();
+};
+
+
+const sendBookingEmail = async (booking) => {
+  try {
+    const formattedBookingDate = formatDate(booking.booking_date);
+    const response = await fetch('http://localhost:5000/send-booking-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        placeName: booking.place_name,
+        vehicleNo: booking.vehicle_no,
+        vehicleCategory: booking.vehicle_category,
+        startTime: booking.start_time,
+        endTime: booking.end_time,
+        bookingDate: formattedBookingDate,
+        slot: booking.slot,
+        email: booking.email,
+      }),
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      console.log('Email sent successfully');
+    } else {
+      console.error('Error sending email:', data.message);
+    }
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
+};
+
 const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
   const [showModal, setShowModal] = useState(true);
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
@@ -37,8 +74,8 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
       const response = await fetch(`http://localhost:5000/api/slots?placeName=${placeName}&vehicleCategory=${vehicleCategory}`);
       const data = await response.json();
       if (data.success) {
-        console.log('Slots fetched:', data.slots); // Debug log
-        setSlots(data.slots.sort((a, b) => a.slotno - b.slotno)); // Sort slots in ascending order
+        console.log('Slots fetched:', data.slots); 
+        setSlots(data.slots.sort((a, b) => a.slotno - b.slotno)); 
       } else {
         console.error('Error fetching slots:', data.message);
       }
@@ -49,7 +86,7 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
 
   const handleSlotClick = (index) => {
     if (slots[index].status === 'Available') {
-      setSelectedSlot(slots[index].slotno); // Store the actual slot number
+      setSelectedSlot(slots[index].slotno); 
     }
   };
 
@@ -83,6 +120,19 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
         console.log('User profile details saved:', data.userProfile);
         console.log({placeName});
         setBookingConfirmed(true);
+
+        // Send booking email
+        await sendBookingEmail({
+          place_name: placeName,
+          vehicle_no: vehicleNo,
+          vehicle_category: vehicleCategory,
+          start_time: startTime,
+          end_time: endTime,
+          booking_date: bookingDate,
+          slot: selectedSlot,
+          email: email
+        });
+
         setTimeout(() => {
           navigate('/my-bookings');
         }, 2000);

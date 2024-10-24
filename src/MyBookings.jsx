@@ -6,6 +6,11 @@ const MyBookings = () => {
   const [error, setError] = useState(null);
   const email = localStorage.getItem('email');
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
   const fetchBookingsByEmail = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/bookings-by-email', {
@@ -18,7 +23,11 @@ const MyBookings = () => {
 
       const data = await response.json();
       if (data.success) {
-        setBookingDetails(data.bookings);
+        const formattedBookings = data.bookings.map(booking => ({
+          ...booking,
+          booking_date: formatDate(booking.booking_date),
+        }));
+        setBookingDetails(formattedBookings);
         setError(null);
       } else {
         setError(data.message);
@@ -44,7 +53,6 @@ const MyBookings = () => {
 
       const data = await response.json();
       if (data.success) {
-        // Remove the deleted booking from the state
         setBookingDetails(prevDetails => prevDetails.filter(b => b.slot !== booking.slot));
         console.log('Slot deleted successfully');
       } else {
@@ -72,7 +80,11 @@ const MyBookings = () => {
 
       const data = await response.json();
       if (data.success) {
-        setBookingDetails(data.bookings);
+        const formattedBookings = data.bookings.map(booking => ({
+          ...booking,
+          booking_date: formatDate(booking.booking_date),
+        }));
+        setBookingDetails(formattedBookings);
         setError(null);
       } else {
         setError(data.message);
@@ -81,6 +93,42 @@ const MyBookings = () => {
       setError('Failed to fetch booking: ' + err.message);
     }
   };
+
+  // const sendBookingEmail = async (booking) => {
+  //   try {
+  //     const formattedBookingDate = formatDate(booking.booking_date);
+  //     const response = await fetch('http://localhost:5000/send-booking-email', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         placeName: booking.place_name,
+  //         vehicleNo: booking.vehicle_no,
+  //         vehicleCategory: booking.vehicle_category,
+  //         startTime: booking.start_time,
+  //         endTime: booking.end_time,
+  //         bookingDate: formattedBookingDate,
+  //         slot: booking.slot,
+  //         email: booking.email,
+  //       }),
+  //     });
+
+  //     const data = await response.json();
+  //     if (data.success) {
+  //       console.log('Email sent successfully');
+  //     } else {
+  //       console.error('Error sending email:', data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error sending email:', error);
+  //   }
+  // };
+
+  // const handleBookClick = async (booking) => {
+  //   // Automatically send the email when the user books a slot
+  //   await sendBookingEmail(booking);
+  // };
 
   useEffect(() => {
     fetchBookingsByEmail();
