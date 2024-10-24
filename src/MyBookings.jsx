@@ -4,7 +4,7 @@ const MyBookings = () => {
   const [vehicleNo, setVehicleNo] = useState('');
   const [bookingDetails, setBookingDetails] = useState([]);
   const [error, setError] = useState(null);
-  const email = localStorage.getItem('email'); // Fetch email from localStorage
+  const email = localStorage.getItem('email');
 
   const fetchBookingsByEmail = async () => {
     try {
@@ -13,52 +13,72 @@ const MyBookings = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }), 
+        body: JSON.stringify({ email }),
       });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || 'Network response was not ok');
-      }
 
       const data = await response.json();
       if (data.success) {
-        setBookingDetails(data.bookings); 
+        setBookingDetails(data.bookings);
         setError(null);
       } else {
         setError(data.message);
       }
     } catch (err) {
       setError('Failed to fetch booking: ' + err.message);
-      console.error('Fetch error:', err);
+    }
+  };
+
+  const handleDelete = async (booking) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/deleteslot', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          placeName: booking.place_name,
+          slotNo: booking.slot,
+          vehicleCategory: booking.vehicle_category,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        // Remove the deleted booking from the state
+        setBookingDetails(prevDetails => prevDetails.filter(b => b.slot !== booking.slot));
+        console.log('Slot deleted successfully');
+      } else {
+        console.error('Error deleting slot:', data.message);
+      }
+    } catch (error) {
+      console.error('Error deleting slot:', error);
     }
   };
 
   const fetchBookingsByEmailAndVehicle = async () => {
+    if (!vehicleNo) {
+      setError('Please enter the vehicle number.');
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:5000/api/bookings-by-email-and-vehicle', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, vehicleNo }), 
+        body: JSON.stringify({ email, vehicleNo }),
       });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || 'Network response was not ok');
-      }
 
       const data = await response.json();
       if (data.success) {
-        setBookingDetails(data.bookings); 
+        setBookingDetails(data.bookings);
         setError(null);
       } else {
         setError(data.message);
       }
     } catch (err) {
       setError('Failed to fetch booking: ' + err.message);
-      console.error('Fetch error:', err);
     }
   };
 
@@ -99,19 +119,19 @@ const MyBookings = () => {
             {bookingDetails.map((booking, index) => (
               <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-105">
                 <div className="p-6 space-y-2">
-                <p className="text-lg font-semibold text-gray-800">{booking.vehicle_no}</p>
-               <p className="text-sm text-gray-600"><span className="font-medium">Category:</span> {booking.vehicle_category}</p>
-              <p className="text-sm text-gray-600"><span className="font-medium">Start:</span> {booking.start_time}</p>
-              <p className="text-sm text-gray-600"><span className="font-medium">End:</span> {booking.end_time}</p>
-              <p className="text-sm text-gray-600"><span className="font-medium">Date:</span> {booking.booking_date}</p>
-              <p className="text-sm text-gray-600"><span className="font-medium">Email:</span> {booking.email}</p>
-              <p className="text-sm text-gray-600"><span className="font-medium">Slot:</span> {booking.slot}</p>
-              
-              <button
-             className="absolute right-0 bottom-0 py-1 px-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
-                >
-                Cancel
-                </button>
+                  <p className="text-lg font-semibold text-gray-800">{booking.vehicle_no}</p>
+                  <p className="text-sm text-gray-600"><span className="font-medium">Place Name:</span> {booking.place_name}</p>
+                  <p className="text-sm text-gray-600"><span className="font-medium">Category:</span> {booking.vehicle_category}</p>
+                  <p className="text-sm text-gray-600"><span className="font-medium">Start:</span> {booking.start_time}</p>
+                  <p className="text-sm text-gray-600"><span className="font-medium">End:</span> {booking.end_time}</p>
+                  <p className="text-sm text-gray-600"><span className="font-medium">Date:</span> {booking.booking_date}</p>
+                  <p className="text-sm text-gray-600"><span className="font-medium">Email:</span> {booking.email}</p>
+                  <p className="text-sm text-gray-600"><span className="font-medium">Slot No:</span> {booking.slot}</p>
+                  <button onClick={() => handleDelete(booking)}
+                    className="py-1 px-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             ))}

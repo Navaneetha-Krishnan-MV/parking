@@ -19,6 +19,59 @@ const pool = new Pool({
 app.use(cors());
 app.use(json());
 
+
+// // Route to fetch available slots
+// app.get('/api/slots', (req, res) => {
+//   const { placeName, vehicleCategory } = req.query;
+
+//   if (!placeName || !vehicleCategory) {
+//     return res.status(400).json({ success: false, message: 'placeName and vehicleCategory are required' });
+//   }
+
+//   const placeSlots = slots[placeName];
+//   if (!placeSlots) {
+//     return res.status(404).json({ success: false, message: 'Parking place not found' });
+//   }
+
+//   const categorySlots = placeSlots[vehicleCategory];
+//   if (!categorySlots) {
+//     return res.status(404).json({ success: false, message: 'Vehicle category not found' });
+//   }
+
+//   res.status(200).json({ success: true, slots: categorySlots });
+// });
+app.get('/api/slots', async (req, res) => {
+  const { placeName, vehicleCategory } = req.query;
+
+  if (!placeName || !vehicleCategory) {
+    return res.status(400).json({ success: false, message: 'placeName and vehicleCategory are required' });
+  }
+
+  const tableName = placeName.replace(/ /g, '_'); // Replace spaces with underscores
+
+  try {
+    const query = `
+      SELECT slotno, status
+      FROM ${tableName}
+      WHERE vehicletype = $1;
+    `;
+    
+    const values = [vehicleCategory];
+
+    const result = await pool.query(query, values);
+
+    if (result.rows.length > 0) {
+      res.status(200).json({ success: true, slots: result.rows });
+    } else {
+      res.status(404).json({ success: false, message: 'No slots found for the specified place and vehicle category' });
+    }
+  } catch (err) {
+    console.error('Error fetching slots:', err);
+    res.status(500).json({ success: false, message: 'Error fetching slots' });
+  }
+});
+
+
 // Get all parking places
 app.get('/api/parking-places', async (req, res) => {
   try {
@@ -29,6 +82,7 @@ app.get('/api/parking-places', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
 
 // Get user details by email
 app.get('/api/user-details', async (req, res) => {
@@ -46,19 +100,47 @@ app.get('/api/user-details', async (req, res) => {
     console.error('Error fetching user details:', err);
     res.status(500).send('Server error');
   }
+
 });
 
-app.post('/api/userprofiledetails', async (req, res) => {
-  const { vehicleNo, vehicleCategory, startTime, endTime, bookingDate, selectedSlot, profileImg, email } = req.body;
 
+app.post('/api/userprofiledetails', async (req, res) => {
+  var { placeName, vehicleNo, vehicleCategory, startTime, endTime, bookingDate, selectedSlot, profileImg, email } = req.body;
+
+  if (!placeName || !vehicleNo || !vehicleCategory || !startTime || !endTime || !bookingDate || selectedSlot === null || !email) {
+    return res.status(400).json({ success: false, message: 'All fields are required' });
+  }
+
+  const tableName = placeName.replace(/ /g, '_'); // Replace spaces with underscores
+  
+  
   try {
+    if (vehicleCategory === "Two Wheeler") {
+      await pool.query('UPDATE parking_places SET atcapacity = atcapacity - 1 WHERE name = $1', [placeName]);
+    } else if (vehicleCategory === "Four Wheeler") {
+      await pool.query('UPDATE parking_places SET afcapacity = afcapacity - 1 WHERE name = $1', [placeName]);
+    }
+    // Insert user profile details into the database
     const insertQuery = `
-      INSERT INTO vehcileemaildetails (vehicle_no, vehicle_category, start_time, end_time, booking_date, slot, profile_img, email)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;
+      INSERT INTO vehcileemaildetails (place_name, vehicle_no, vehicle_category, start_time, end_time, booking_date, slot, profile_img, email)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *;
     `;
-    const values = [vehicleNo, vehicleCategory, startTime, endTime, bookingDate, selectedSlot, profileImg, email];
+    const values = [placeName, vehicleNo, vehicleCategory, startTime, endTime, bookingDate, selectedSlot, profileImg, email];
 
     const result = await pool.query(insertQuery, values);
+
+    console.log('User profile details saved:', result.rows[0]);
+
+    // Update the slot status to 'Booked'
+    const updateSlotQuery = `
+      UPDATE ${tableName}
+      SET status = 'Booked'
+      WHERE vehicletype = $1 AND slotno = $2;
+    `;
+    const updateSlotValues = [vehicleCategory, selectedSlot];
+
+    await pool.query(updateSlotQuery, updateSlotValues);
+
 
     res.status(200).json({ success: true, userProfile: result.rows[0] });
   } catch (err) {
@@ -66,6 +148,52 @@ app.post('/api/userprofiledetails', async (req, res) => {
     res.status(500).json({ success: false, message: 'Error saving user profile details' });
   }
 });
+
+app.delete('/api/deleteslot', async (req, res) => {
+  const { placeName, slotNo, vehicleCategory } = req.body;
+
+  if (!placeName || !slotNo || !vehicleCategory) {
+    return res.status(400).json({ success: false, message: 'placeName, slotNo, and vehicleCategory are required' });
+  }
+
+  const tableName = placeName.replace(/ /g, '_'); // Replace spaces with underscores
+
+  try {
+    // Delete from vehcileemaildetails
+    const deleteQuery = `
+      DELETE FROM vehcileemaildetails
+      WHERE place_name = $1 AND slot = $2 RETURNING *;
+    `;
+    const deleteValues = [placeName, slotNo];
+    const deleteResult = await pool.query(deleteQuery, deleteValues);
+
+    if (deleteResult.rowCount === 0) {
+      return res.status(404).json({ success: false, message: 'Slot not found' });
+    }
+
+    // Update the slot status to 'Available'
+    const updateSlotQuery = `
+      UPDATE ${tableName}
+      SET status = 'Available'
+      WHERE vehicletype = $1 AND slotno = $2;
+    `;
+    const updateSlotValues = [vehicleCategory, slotNo];
+    await pool.query(updateSlotQuery, updateSlotValues);
+
+    // Update the capacity based on vehicle category
+    if (vehicleCategory === "Two Wheeler") {
+      await pool.query('UPDATE parking_places SET atcapacity = atcapacity + 1 WHERE name = $1', [placeName]);
+    } else if (vehicleCategory === "Four Wheeler") {
+      await pool.query('UPDATE parking_places SET afcapacity = afcapacity + 1 WHERE name = $1', [placeName]);
+    }
+
+    res.status(200).json({ success: true, message: 'Slot deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting slot:', err);
+    res.status(500).json({ success: false, message: 'Error deleting slot' });
+  }
+});
+
 
 
 // User registration
@@ -248,7 +376,6 @@ app.post('/api/bookings-by-email', async (req, res) => {
     res.status(500).json({ success: false, message: 'Error fetching booking details' });
   }
 });
-
 
 // Start the server
 app.listen(port, () => {

@@ -9,7 +9,7 @@ const UserProfile = () => {
   const [dob, setDob] = useState('');
   const [gender, setGender] = useState('');
   const [address, setAddress] = useState('');
-  const [nameStore, setNameStore] = useState(''); // State variable to store the email
+  const [nameStore, setNameStore] = useState(''); 
 
   const location = useLocation();
 
@@ -24,7 +24,7 @@ const UserProfile = () => {
     // Store the email to the nameStore variable
     setNameStore(email1); 
 
-    const userProfile = { name, email1, phoneNumber, dob, gender, address }; // Use name instead of nameStore
+    const userProfile = { name, nameStore, phoneNumber, dob, gender, address }; 
 
     try {
       const response = await fetch('http://localhost:5000/api/profiledetails', {
