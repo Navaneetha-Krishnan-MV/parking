@@ -7,8 +7,6 @@ import pdfMake from 'pdfmake';
 
 
 const { Pool } = pkg;
-import dotenv from 'dotenv';
-dotenv.config();
 
 const app = express();
 const port = 5000;
