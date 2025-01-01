@@ -3,24 +3,31 @@ import pkg from 'pg';
 import cors from 'cors';
 import nodemailer from 'nodemailer';
 import PDFDocument from 'pdfkit';
+import pdfMake from 'pdfmake';
 
 
 const { Pool } = pkg;
+import dotenv from 'dotenv';
+dotenv.config();
+
 const app = express();
 const port = 5000;
 
 
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'parkings',
-  password: 'madhumitha',
-  port: 5432,
-});
-
 // const pool = new Pool({
-//   connectionString: process.env.POSTGRES_URL,
-// })
+//   user: 'postgres',
+//   host: 'localhost',
+//   database: 'parkings',
+//   password: 'madhumitha',
+//   port: 5432,
+// });
+
+
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URL,
+})
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 app.use(cors());
 app.use(json());
@@ -230,7 +237,9 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// User authentication registration
+
+
+
 app.post('/api/authentication', async (req, res) => {
   const { email, password, phoneNumber } = req.body;
   console.log("Entered in database");
@@ -259,7 +268,7 @@ app.post('/api/profiledetails', async (req, res) => {
     const userCheck = await pool.query('SELECT * FROM user_profile_details WHERE email = $1', [email]);
 
     if (userCheck.rows.length > 0) {
-      // Update existing user profile
+     
       const updateQuery = `
         UPDATE user_profile_details
         SET name = $1, phone_number = $2, dob = $3, gender = $4, address = $5
@@ -319,7 +328,7 @@ app.post('/api/bookings-by-email', async (req, res) => {
 
   try {
 
-    l
+    
     const query = 'SELECT * FROM vehcileemaildetails WHERE email = $1';
     const values = [email];
 
@@ -329,7 +338,7 @@ app.post('/api/bookings-by-email', async (req, res) => {
       
       res.json({ success: true, bookings: result.rows });
     } else {
-      l
+      
       res.json({ success: false, message: 'No bookings found for this email' });
     }
   } catch (err) {
@@ -364,60 +373,117 @@ app.post('/api/bookings-by-email', async (req, res) => {
 
 
 
-app.post('/send-booking-email', (req, res) => {
-  const { placeName, vehicleNo, vehicleCategory, startTime, endTime, bookingDate, slot, email } = req.body;
+app.post('/send-booking-email', async (req, res) => {
+  const {
+    placeName,
+    vehicleNo,
+    vehicleCategory,
+    startTime,
+    endTime,
+    bookingDate,
+    slot,
+    email,
+    phoneNumber, // Add phone number to the request body
+  } = req.body;
 
-  console.log('Received booking details:', req.body); 
+  console.log('Received booking details:', req.body);
 
-  const doc = new PDFDocument();
-  let buffers = [];
-  doc.on('data', buffers.push.bind(buffers));
-  doc.on('end', () => {
-      let pdfData = Buffer.concat(buffers);
+  // Configure the SMTP transporter
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail', // or use SMTP configuration for custom services
+    auth: {
+      user: 'parkpuram7@gmail.com',
+      pass: 'vznfgdwkvauaiomn',
+    },
+  });
 
-      let transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-              user: 'parkpuram7@gmail.com',
-              pass: 'vznfgdwkvauaiomn'
-          }
-      });
+  // HTML template for the email
+  const emailHTML = `
+    <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px;">
+      <h2 style="text-align: center; color: #333;">Parkpuram Parking Bill</h2>
+      <p style="text-align: center; color: #666;">Thank you for choosing Parkpuram. Below are your booking details.</p>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+          <tr>
+            <th style="border-bottom: 1px solid #ddd; padding: 8px; text-align: left; background-color: #f4f4f4;">Description</th>
+            <th style="border-bottom: 1px solid #ddd; padding: 8px; text-align: right; background-color: #f4f4f4;">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px;">Parking Place</td>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px; text-align: right;">${placeName}</td>
+          </tr>
+          <tr>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px;">Vehicle Number</td>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px; text-align: right;">${vehicleNo}</td>
+          </tr>
+          <tr>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px;">Vehicle Category</td>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px; text-align: right;">${vehicleCategory}</td>
+          </tr>
+          <tr>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px;">Start Time</td>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px; text-align: right;">${startTime}</td>
+          </tr>
+          <tr>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px;">End Time</td>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px; text-align: right;">${endTime}</td>
+          </tr>
+          <tr>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px;">Booking Date</td>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px; text-align: right;">${bookingDate}</td>
+          </tr>
+          <tr>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px;">Slot Number</td>
+            <td style="border-bottom: 1px solid #ddd; padding: 8px; text-align: right;">${slot}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="text-align: center; color: #666; margin-top: 20px;">If you have any questions about your booking, please contact us at support@parkpuram.com.</p>
+    </div>
+  `;
 
-      let mailOptions = {
-          from: 'parkpuram7@gmail.com',
-          to: email,
-          subject: 'Booking Confirmation',
-          text: 'Your booking details are attached in the PDF.',
-          attachments: [
-              {
-                  filename: 'booking-details.pdf',
-                  content: pdfData
-              }
-          ]
-      };
+  // Mail options
+  const mailOptions = {
+    from: 'parkpuram7@gmail.com',
+    to: email,
+    subject: 'Your Parkpuram Booking Confirmation',
+    html: emailHTML,
+  };
 
+  // SMS body
+  // const smsBody = `Thank you for booking at Parkpuram. Here are your booking details:
+  // - Place: ${placeName}
+  // - Vehicle: ${vehicleNo} (${vehicleCategory})
+  // - Start Time: ${startTime}
+  // - End Time: ${endTime}
+  // - Date: ${bookingDate}
+  // - Slot: ${slot}
+  // `;
 
-transporter.sendMail(mailOptions, (error, info) => {
-  if (error) {
-      console.error('Error sending email:', error); // Log error
-      return res.status(500).send(error.toString());
+  try {
+    // Send Email
+    await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully.');
+
+    // Send SMS
+    // await client.messages.create({
+    //   body: smsBody,
+    //   from: '+17634529657', // Replace with your Twilio phone number
+    //   to: '+919787825610', // User's phone number
+    // });
+    // console.log('SMS sent successfully.');
+
+    res.status(200).send('Email sent successfully.');
+  } catch (error) {
+    console.error('Error sending email or SMS:', error);
+    res.status(500).send('Error sending email or SMS: ' + error.toString());
   }
-  console.log('Email sent:', info.response); // Log success
-  res.status(200).send('Email sent: ' + info.response);
-});
 });
 
-doc.fontSize(25).text('Booking Details', { align: 'center' });
-doc.moveDown();
-doc.fontSize(16).text(`Parking Place: ${placeName}`);
-doc.text(`Vehicle Number: ${vehicleNo}`);
-doc.text(`Vehicle Category: ${vehicleCategory}`);
-doc.text(`Start Time: ${startTime}`);
-doc.text(`End Time: ${endTime}`);
-doc.text(`Booking Date: ${bookingDate}`);
-doc.text(`Slot Number: ${slot}`);
-doc.end();
-});
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

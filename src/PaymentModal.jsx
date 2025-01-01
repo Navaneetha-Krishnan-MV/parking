@@ -7,7 +7,6 @@ const formatDate = (dateString) => {
   return date.toLocaleDateString();
 };
 
-
 const sendBookingEmail = async (booking) => {
   try {
     const formattedBookingDate = formatDate(booking.booking_date);
@@ -52,6 +51,7 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [slots, setSlots] = useState([]);
   const [amount, setAmount] = useState(50);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -101,7 +101,7 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
       startTime,
       endTime,
       bookingDate,
-      selectedSlot, // Use the actual slot number
+      selectedSlot, 
       profileImg: 'path_to_image.jpg',
       email
     };
@@ -121,7 +121,6 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
         console.log({placeName});
         setBookingConfirmed(true);
 
-        // Send booking email
         await sendBookingEmail({
           place_name: placeName,
           vehicle_no: vehicleNo,
@@ -144,6 +143,22 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
     }
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!vehicleNo) newErrors.vehicleNo = 'Vehicle number is required';
+    if (!bookingDate) newErrors.bookingDate = 'Booking date is required';
+    if (!startTime) newErrors.startTime = 'Start time is required';
+    if (!endTime) newErrors.endTime = 'End time is required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleBookSlotsClick = () => {
+    if (validateForm()) {
+      setShowSlotBooking(true);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -160,8 +175,9 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
           <>
             <h1 id="paytext">Book Slots & Payment</h1>
             <div className="input-group">
-              <label htmlFor="vehicleNo" id="vehicleNo-label">Enter Vehicle no {email}</label>
-              <input type="text" id="vehicleNo" name="vehicleNo" value={vehicleNo} required onChange={(e) => setVehicleNo(e.target.value)} />
+              <label htmlFor="vehicleNo" id="vehicleNo-label">Enter Vehicle no*</label>
+              <input type="text" required id="vehicleNo" name="vehicleNo" value={vehicleNo} onChange={(e) => setVehicleNo(e.target.value)} />
+              {errors.vehicleNo && <span className="error text-red-500">{errors.vehicleNo}*</span>}
             </div>
 
             <div className="input-group">
@@ -173,22 +189,25 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
             </div>
 
             <div className="input-group">
-              <label htmlFor="bookingDate" id="bookingDate-label">Booking Date</label>
+              <label htmlFor="bookingDate" id="bookingDate-label">Booking Date*</label>
               <input type="date" id="bookingDate" name="bookingDate" required value={bookingDate} onChange={(e) => setBookingDate(e.target.value)} />
+              {errors.bookingDate && <span className="error text-red-500">{errors.bookingDate}*</span>}
             </div>
 
             <div className="input-group">
-              <label htmlFor="startTime" id="startTime-label">Start Time</label>
+              <label htmlFor="startTime" id="startTime-label">Start Time*</label>
               <input type="time" id="startTime" name="startTime" required value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+              {errors.startTime && <span className="error text-red-500">{errors.startTime}*</span>}
             </div>
 
             <div className="input-group">
-              <label htmlFor="endTime" id="endTime-label">End Time</label>
+              <label htmlFor="endTime" id="endTime-label">End Time*</label>
               <input type="time" id="endTime" name="endTime" required value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+              {errors.endTime && <span className="error text-red-500">{errors.endTime}*</span>}
             </div>
 
             <div className="modal-footer">
-              <button onClick={() => setShowSlotBooking(true)} id="bookslots-button">Book Slots</button>
+              <button onClick={handleBookSlotsClick} id="bookslots-button">Book Slots</button>
               <button onClick={onClose} id="close-button">Close</button>
             </div>
           </>

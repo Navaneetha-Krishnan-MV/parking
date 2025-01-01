@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parkpuram Offline Parking</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="bg-blue-600 text-white py-4 px-6">
+        <h2 class="text-2xl font-bold text-center">Parkpuram Offline Parking</h2>
+        <p class="text-center mt-1 text-blue-100">Book your parking slot easily and securely</p>
+      </div>
+      <div class="p-6">
+        <p class="text-gray-700 text-center mb-4">
+          Welcome to Parkpuram! We offer convenient offline booking for your parking needs. Please proceed with the payment to confirm your booking.
+        </p>
+        <form id="paymentForm" class="text-center">
+          <script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_OpADtExIb2nYXO" async></script>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.onload = function() {
+      const paymentButton = document.querySelector('#paymentForm button');
+      if (paymentButton) {
+        paymentButton.click();
+      }
+    };
+  </script>
+</body>
+</html>
