@@ -19,6 +19,7 @@
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "css-loader": "^7.1.2",
+    "dotenv": "^17.0.1",
     "express": "^4.21.1",
     "https": "^1.0.0",
     "https-browserify": "^1.0.0",
