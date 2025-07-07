@@ -13,7 +13,7 @@ const MyBookings = () => {
 
   const fetchBookingsByEmail = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/bookings-by-email', {
+      const response = await fetch('https://parking-0wap.onrender.com/api/bookings-by-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ const MyBookings = () => {
 
   const handleDelete = async (booking) => {
     try {
-      const response = await fetch('http://localhost:5000/api/deleteslot', {
+      const response = await fetch('https://parking-0wap.onrender.com/api/deleteslot', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ const MyBookings = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/bookings-by-email-and-vehicle', {
+      const response = await fetch('https://parking-0wap.onrender.com/api/bookings-by-email-and-vehicle', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ const MyBookings = () => {
   const sendBookingEmail = async (booking) => {
     try {
       const formattedBookingDate = formatDate(booking.booking_date);
-      const response = await fetch('http://localhost:5000/send-booking-email', {
+      const response = await fetch('https://parking-0wap.onrender.com/send-booking-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

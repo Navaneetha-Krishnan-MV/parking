@@ -177,7 +177,7 @@ function Header() {
   useEffect(() => {
     if (email) {
       
-      fetch(`http://localhost:5000/api/user-details?email=${email}`)
+      fetch(`https://parking-0wap.onrender.com/api/user-details?email=${email}`)
         .then(response => response.json())
         .then(data => {
           if (data.success) {
@@ -237,7 +237,7 @@ function Header() {
         formData.append('profilePhoto', file);
         formData.append('email', email);  // Assuming email is a unique identifier
 
-        fetch('http://localhost:5000/api/uploadProfilePhoto', {
+        fetch('https://parking-0wap.onrender.com/api/uploadProfilePhoto', {
           method: 'POST',
           body: formData,
         })

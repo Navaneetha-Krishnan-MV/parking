@@ -10,7 +10,7 @@ const formatDate = (dateString) => {
 const sendBookingEmail = async (booking) => {
   try {
     const formattedBookingDate = formatDate(booking.booking_date);
-    const response = await fetch('http://localhost:5000/send-booking-email', {
+    const response = await fetch('https://parking-0wap.onrender.com/send-booking-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
   const fetchSlots = async () => {
     const placeName = localStorage.getItem('placeName');
     try {
-      const response = await fetch(`http://localhost:5000/api/slots?placeName=${placeName}&vehicleCategory=${vehicleCategory}`);
+      const response = await fetch(`https://parking-0wap.onrender.com/api/slots?placeName=${placeName}&vehicleCategory=${vehicleCategory}`);
       const data = await response.json();
       if (data.success) {
         console.log('Slots fetched:', data.slots); 
@@ -107,7 +107,7 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
     };
   
     try {
-      const response = await fetch('http://localhost:5000/api/userprofiledetails', {
+      const response = await fetch('https://parking-0wap.onrender.com/api/userprofiledetails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

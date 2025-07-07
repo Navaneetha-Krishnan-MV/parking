@@ -43,7 +43,7 @@ function Login() {
     }
   
     try {
-      const response = await axios.post('http://localhost:5000/api/login', {
+      const response = await axios.post('https://parking-0wap.onrender.com/api/login', {
         email,
         password,
       });
@@ -76,7 +76,7 @@ function Login() {
       localStorage.setItem('email', email);
       localStorage.setItem('name', displayName);
 
-      const response = await axios.post('http://localhost:5000/api/registration', {
+      const response = await axios.post('https://parking-0wap.onrender.com/api/registration', {
         email,
         displayName,
       });

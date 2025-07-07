@@ -195,7 +195,7 @@ function Signin() {
       localStorage.setItem("name", displayName);
 
       // Send user data to the backend
-      const response = await fetch('http://localhost:5000/api/registration', {
+      const response = await fetch('https://parking-0wap.onrender.com/api/registration', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -234,7 +234,7 @@ function Signin() {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/authentication', {
+        const response = await fetch('https://parking-0wap.onrender.com/api/authentication', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

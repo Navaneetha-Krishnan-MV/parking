@@ -263,7 +263,7 @@ const DistrictRegionSelector = () => {
     }, []);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/parking-places')
+        axios.get('https://parking-0wap.onrender.com/api/parking-places')
             .then(response => {
                 setParkingPlaces(response.data);
             })
@@ -290,7 +290,7 @@ const DistrictRegionSelector = () => {
 
         const userEmail = 'user-email@gmail.com'; // Replace with actual user email
 
-        axios.post('http://localhost:5000/send-booking-email', {
+        axios.post('https://parking-0wap.onrender.com/send-booking-email', {
             placeName,
             tcapacity,
             fcapacity,

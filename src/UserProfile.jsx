@@ -27,7 +27,7 @@ const UserProfile = () => {
     const userProfile = { name, nameStore, phoneNumber, dob, gender, address }; 
 
     try {
-      const response = await fetch('http://localhost:5000/api/profiledetails', {
+      const response = await fetch('https://parking-0wap.onrender.com/api/profiledetails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const UserProfile = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/delete-profile-details/${email1}`, {
+      const response = await fetch(`https://parking-0wap.onrender.com/api/delete-profile-details/${email1}`, {
         method: 'DELETE',
       });
 
