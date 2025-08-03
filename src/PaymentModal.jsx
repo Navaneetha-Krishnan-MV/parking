@@ -49,7 +49,7 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
   const [vehicleCategory, setVehicleCategory] = useState('Two Wheeler');
   const [showSlotBooking, setShowSlotBooking] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const [slots, setSlots] = useState([]);
+  const [slots, setSlots] = useState(null); // null means loading, [] means loaded but no slots
   const [amount, setAmount] = useState(50);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -77,37 +77,44 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
 
   const fetchSlots = async () => {
     const placeName = localStorage.getItem('placeName');
+    console.log('Fetching slots - PlaceName:', placeName, 'Category:', vehicleCategory);
+    
     if (!placeName) {
       console.error('No placeName found in localStorage');
+      alert('No place name found. Please try again.'); // Temporary alert for mobile debugging
       return;
     }
     
-    console.log('Fetching slots for place:', placeName, 'category:', vehicleCategory);
-    
     try {
-      const response = await fetch(`https://parking-0wap.onrender.com/api/slots?placeName=${encodeURIComponent(placeName)}&vehicleCategory=${encodeURIComponent(vehicleCategory)}`);
+      const url = `https://parking-0wap.onrender.com/api/slots?placeName=${encodeURIComponent(placeName)}&vehicleCategory=${encodeURIComponent(vehicleCategory)}`;
+      console.log('Fetching from URL:', url);
+      
+      const response = await fetch(url);
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      
       const data = await response.json();
       console.log('API response:', data);
       
-      if (data.success) {
+      if (data.success && data.slots) {
         const sortedSlots = [...data.slots].sort((a, b) => a.slotno - b.slotno);
-        console.log('Sorted slots:', sortedSlots);
         setSlots(sortedSlots);
+        console.log('Slots set:', sortedSlots.length);
       } else {
-        console.error('API returned error:', data.message);
-        setSlots([]); // Reset slots on error to show empty state
+        console.error('API returned error or no slots:', data.message);
+        setSlots([]);
       }
     } catch (error) {
       console.error('Error fetching slots:', error);
-      setSlots([]); // Reset slots on error to show empty state
+      alert(`Error: ${error.message}`); // Temporary alert for mobile debugging
+      setSlots([]);
     }
   };
 
   const handleSlotClick = (index) => {
-    if (slots[index].status === 'Available') {
+    if (slots && slots[index] && slots[index].status === 'Available') {
       setSelectedSlot(slots[index].slotno); 
     }
   };
@@ -238,7 +245,9 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
             <div className="slot-booking-area">
               <h2>Select Your Slot</h2>
               <div className="slots-grid">
-                {slots.length > 0 ? (
+                {slots === null ? (
+                  <p>Loading slots...</p>
+                ) : slots.length > 0 ? (
                   slots.map((slot, index) => (
                     <div
                       key={index}
@@ -249,7 +258,10 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
                     </div>
                   ))
                 ) : (
-                  <p>No slots available</p>
+                  <div className="no-slots-message">
+                    <p>No slots available for {vehicleCategory} at this location.</p>
+                    <p>Please try a different vehicle category or check back later.</p>
+                  </div>
                 )}
               </div>
             </div>

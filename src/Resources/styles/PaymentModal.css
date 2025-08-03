@@ -170,28 +170,92 @@
 /* Slots grid styling */
 .slots-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 12px;
   justify-items: center;
   align-items: center;
   width: 100%;
-  padding: 5px;
+  padding: 10px;
   box-sizing: border-box;
+  min-height: 200px; /* Ensure minimum height for loading/empty states */
+}
+
+/* Slot styling */
+.slot {
+  background-color: #e0e0e0;
+  padding: 8px;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  aspect-ratio: 1;
+  box-sizing: border-box;
+}
+
+.slot.selected {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+.slot.unavailable {
+  background-color: #ffcdd2;
+  color: #c62828;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* No slots message */
+.no-slots-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.no-slots-message p {
+  margin: 5px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .slots-grid {
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 10px;
+    padding: 8px;
+  }
 }
 
 @media (max-width: 480px) {
   .slots-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    padding: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 5px;
   }
   
   .slot {
-    width: 100%;
-    aspect-ratio: 1;
     min-width: 0;
     min-height: 0;
-    font-size: 14px;
+    font-size: 13px;
+    padding: 6px;
+  }
+  
+  .no-slots-message {
+    padding: 15px 10px;
+  }
+  
+  .no-slots-message p {
+    font-size: 13px;
   }
 }
 
