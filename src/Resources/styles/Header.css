@@ -204,8 +204,16 @@
 }
 
 /* Focus styles for better accessibility */
-button:focus, a:focus {
-    outline: 2px solid #4ade80;
+button:focus,
+a:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Custom focus-visible styles for keyboard navigation */
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid #3b82f6 !important;
     outline-offset: 2px;
     border-radius: 0.25rem;
 }
@@ -250,9 +258,17 @@ button:focus, a:focus {
 
 .close:hover,
 .close:focus {
-    color: black;
-     text-decoration: none;
-     cursor: pointer;
+    color: black; 
+    text-decoration: none; 
+    cursor: pointer;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.close:focus-visible {
+    outline: 2px solid #3b82f6 !important;
+    outline-offset: 2px;
+    border-radius: 0.25rem;
 }
 
 h2 {
@@ -284,6 +300,24 @@ h2 {
 
 .profile-section .file-label:hover {
     background-color: #45a049; 
+}
+
+/* Remove focus outline for file input and buttons */
+.file-input:focus,
+button:focus,
+input[type="file"]:focus,
+button:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Add focus-visible styles */
+.file-input:focus-visible,
+button:focus-visible,
+input[type="file"]:focus-visible {
+    outline: 2px solid #3b82f6 !important;
+    outline-offset: 2px;
+    border-radius: 0.25rem;
 }
 
 .profile-section input[type="file"] {

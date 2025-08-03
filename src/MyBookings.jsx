@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import styles from './Resources/styles/MyBookings.module.css';
 
 const MyBookings = () => {
   const [vehicleNo, setVehicleNo] = useState('');
@@ -135,55 +136,84 @@ const MyBookings = () => {
   }, []);
 
   return (
-    <div className=" mx-auto  px-4 py-8">
-      <div className="max-w-md mx-auto space-y-6">
-        <button
-          onClick={fetchBookingsByEmail}
-          className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
-        >
-          My Bookings
-        </button>
-        <div className="flex space-x-4 ml-[100px]">
-          <input
-            type="text"
-            value={vehicleNo}
-            onChange={(e) => setVehicleNo(e.target.value)}
-            placeholder="Enter Vehicle Number"
-            className="flex-grow py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
+    <div className={styles.container} style={{ overflow: 'hidden' }}>
+      <div className={styles.searchContainer}>
+        <div className={styles.searchBox}>
           <button
-            onClick={fetchBookingsByEmailAndVehicle}
-            className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+            onClick={fetchBookingsByEmail}
+            className={`${styles.button} ${styles.primaryButton}`}
           >
-            View Details
+            Show All My Bookings
           </button>
+          <div style={{ display: 'flex', gap: '0.5rem', width: '100%' }}>
+            <input
+              type="text"
+              value={vehicleNo}
+              onChange={(e) => setVehicleNo(e.target.value)}
+              placeholder="Enter Vehicle Number"
+              className={styles.inputField}
+              onKeyPress={(e) => e.key === 'Enter' && fetchBookingsByEmailAndVehicle()}
+            />
+            <button
+              onClick={fetchBookingsByEmailAndVehicle}
+              className={`${styles.button} ${styles.primaryButton}`}
+              style={{ whiteSpace: 'nowrap' }}
+            >
+              Search
+            </button>
+          </div>
         </div>
-        {error && <p className="text-red-600 text-center">{error}</p>}
+        {error && <p className={styles.errorMessage}>{error}</p>}
       </div>
-      {bookingDetails.length > 0 && (
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-center mb-8">Booking Details</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      {bookingDetails.length > 0 ? (
+        <div>
+          <h2 className={styles.header}>Your Booking Details</h2>
+          <div className={styles.bookingsGrid}>
             {bookingDetails.map((booking, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 ease-in-out transform hover:scale-105">
-                <div className="p-6 space-y-2">
-                  <p className="text-lg font-semibold text-gray-800">{booking.vehicle_no}</p>
-                  <p className="text-sm text-gray-600"><span className="font-medium">Place Name:</span> {booking.place_name}</p>
-                  <p className="text-sm text-gray-600"><span className="font-medium">Category:</span> {booking.vehicle_category}</p>
-                  <p className="text-sm text-gray-600"><span className="font-medium">Start:</span> {booking.start_time}</p>
-                  <p className="text-sm text-gray-600"><span className="font-medium">End:</span> {booking.end_time}</p>
-                  <p className="text-sm text-gray-600"><span className="font-medium">Date:</span> {booking.booking_date}</p>
-                  <p className="text-sm text-gray-600"><span className="font-medium">Email:</span> {booking.email}</p>
-                  <p className="text-sm text-gray-600"><span className="font-medium">Slot No:</span> {booking.slot}</p>
-                  <button onClick={() => handleDelete(booking)}
-                    className="py-1 px-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
-                  >
-                    Cancel
-                  </button>
+              <div key={index} className={styles.bookingCard} style={{ animationDelay: `${index * 0.1}s` }}>
+                <div className={styles.cardContent}>
+                  <h3 className={styles.cardTitle}>Booking #{index + 1}</h3>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Vehicle:</span>
+                    <span className={styles.detailValue}>{booking.vehicle_no}</span>
+                  </div>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Location:</span>
+                    <span className={styles.detailValue}>{booking.place_name}</span>
+                  </div>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Category:</span>
+                    <span className={styles.detailValue}>{booking.vehicle_category}</span>
+                  </div>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Timing:</span>
+                    <span className={styles.detailValue}>{booking.start_time} - {booking.end_time}</span>
+                  </div>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Date:</span>
+                    <span className={styles.detailValue}>{booking.booking_date}</span>
+                  </div>
+                  <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Slot:</span>
+                    <span className={styles.detailValue}>#{booking.slot}</span>
+                  </div>
+                  <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+                    <button 
+                      onClick={() => handleDelete(booking)}
+                      className={`${styles.button} ${styles.secondaryButton}`}
+                    >
+                      Cancel Booking
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
+        </div>
+      ) : (
+        <div className={styles.emptyState}>
+          <p>No bookings found. Make a new booking to see it here!</p>
         </div>
       )}
     </div>

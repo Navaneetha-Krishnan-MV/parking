@@ -20,39 +20,66 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 500px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
   background-color: white;
   border-radius: 12px;
   transform: translate(-50%, -50%);
-  padding: 30px;
+  padding: 20px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
   z-index: 999;
+}
+
+@media (max-width: 480px) {
+  .payment-modal {
+    padding: 15px;
+    width: 95%;
+  }
 }
 
 /* Modal text */
 #paytext {
   color: #333;
   text-align: center;
-  margin-top: 10px;
-  margin-bottom: 30px;
-  font-size: 26px;
+  margin: 10px 0 20px;
+  font-size: 22px;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+}
+
+@media (min-width: 768px) {
+  #paytext {
+    font-size: 26px;
+    margin-bottom: 30px;
+  }
 }
 
 /* Buttons */
 #bookslots-button, #payment-button, #previous-button, #close-button {
   color: white;
   background: #007BFF;
-  width: 160px;
+  width: 100%;
+  max-width: 160px;
   border: none;
   border-radius: 5px;
   padding: 12px;
   cursor: pointer;
-  margin-right: 10px;
+  margin: 10px 5px;
   text-align: center;
   font-size: 16px;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 480px) {
+  #bookslots-button, #payment-button, #previous-button, #close-button {
+    padding: 10px;
+    font-size: 15px;
+    margin: 5px 0;
+    max-width: 100%;
+  }
 }
 
 #bookslots-button:hover, #payment-button:hover, #previous-button:hover, #close-button:hover {
@@ -62,14 +89,29 @@
 /* Modal footer buttons container */
 .modal-footer {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   margin-top: 20px;
+  gap: 10px;
+}
+
+@media (max-width: 480px) {
+  .modal-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
 /* Input fields */
 .input-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+@media (max-width: 480px) {
+  .input-group {
+    margin-bottom: 1rem;
+  }
 }
 
 .input-group label {
@@ -99,38 +141,64 @@
 
 /* Slot booking area styling */
 .slot-booking-area {
-  margin-top: 20px;
-  padding: 20px;
+  margin-top: 15px;
+  padding: 15px;
   background-color: #f1f1f1;
   border-radius: 8px;
   border: 1px solid #ddd;
-  height: 500px; /* Adjust height if needed */
-  width: 100%; /* Use full width of the modal */
-  overflow-y: auto; /* Add scrollbar if content overflows */
+  max-height: 60vh;
+  width: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 480px) {
+  .slot-booking-area {
+    padding: 10px;
+    max-height: 50vh;
+  }
 }
 
 /* Slots grid styling */
 .slots-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* Adjust minmax value as needed */
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  gap: 8px;
   justify-items: center;
-  align-items: center; /* Align items vertically */
+  align-items: center;
+}
+
+@media (max-width: 480px) {
+  .slots-grid {
+    grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+    gap: 6px;
+  }
 }
 
 /* Slot styling */
 .slot {
   background-color: #e0e0e0;
-  padding: 12px;
+  padding: 8px;
   text-align: center;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  min-width: 50px; /* Ensure minimum width for slots */
-  min-height: 50px; /* Ensure minimum height for slots */
+  transition: all 0.2s ease;
+  min-width: 40px;
+  min-height: 40px;
   display: flex;
   align-items: center;
-  justify-content: center; /* Center text horizontally and vertically */
+  justify-content: center;
+  font-size: 12px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 481px) {
+  .slot {
+    padding: 10px;
+    min-width: 50px;
+    min-height: 50px;
+    font-size: 14px;
+  }
 }
 
 /* Selected slot styling */
@@ -142,16 +210,31 @@
 /* Close button styling */
 .close-button {
   position: absolute;
-  top: -3px;
-  left:462px;
+  top: 5px;
+  right: 5px;
   background: black;
   border: none;
-  font-size: 20px;
-  width: 40px;
-  height: 40px;
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
   color: white;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 481px) {
+  .close-button {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
 }
 
 .close-button:hover {
@@ -181,10 +264,19 @@
   color: black;
   font-weight: bold;
   text-align: center;
-  padding: 10px;
+  padding: 12px 10px;
   z-index: 1000;
   transition: opacity 0.5s ease-in-out;
   opacity: 1;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .booking-confirmation {
+    padding: 15px 10px;
+    font-size: 16px;
+  }
 }
 
 .booking-confirmation.hidden {

@@ -8,7 +8,25 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
 
+/* Remove focus outline for header and footer elements */
+header a:focus,
+header button:focus,
+footer a:focus,
+footer button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Add custom focus styles for better accessibility */
+header a:focus-visible,
+header button:focus-visible,
+footer a:focus-visible,
+footer button:focus-visible {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 #root{
   height: max-content;
