@@ -38,7 +38,7 @@ const sendBookingEmail = async (booking) => {
   }
 };
 
-const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
+const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email, placeName: propPlaceName }) => {
   const [showModal, setShowModal] = useState(true);
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [isBlurred, setIsBlurred] = useState(false);
@@ -50,6 +50,7 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
   const [showSlotBooking, setShowSlotBooking] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [slots, setSlots] = useState(null); // null means loading, [] means loaded but no slots
+  const [currentPlaceName, setCurrentPlaceName] = useState('');
   const [amount, setAmount] = useState(50);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -68,25 +69,44 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
     }
   }, [showSlotBooking, vehicleCategory]);
 
-  // Initial fetch when component mounts
+  // Update placeName from props or localStorage when component mounts/updates
   useEffect(() => {
-    if (isOpen && showSlotBooking) {
+    const storedPlaceName = localStorage.getItem('placeName');
+    console.log('Initial placeName check - prop:', propPlaceName, 'stored:', storedPlaceName);
+    
+    if (propPlaceName) {
+      setCurrentPlaceName(propPlaceName);
+      localStorage.setItem('placeName', propPlaceName);
+    } else if (storedPlaceName) {
+      setCurrentPlaceName(storedPlaceName);
+    } else {
+      console.error('No placeName found in props or localStorage');
+      alert('Error: No location selected. Please go back and select a location.');
+      onClose();
+      return;
+    }
+  }, [propPlaceName, onClose]);
+
+  // Fetch slots when showSlotBooking changes
+  useEffect(() => {
+    if (isOpen && showSlotBooking && currentPlaceName) {
+      console.log('Fetching slots for place:', currentPlaceName);
       fetchSlots();
     }
-  }, [isOpen]);
+  }, [isOpen, showSlotBooking, currentPlaceName]);
 
   const fetchSlots = async () => {
-    const placeName = localStorage.getItem('placeName');
-    console.log('Fetching slots - PlaceName:', placeName, 'Category:', vehicleCategory);
+    console.log('Fetching slots - PlaceName:', currentPlaceName, 'Category:', vehicleCategory);
     
-    if (!placeName) {
-      console.error('No placeName found in localStorage');
-      alert('No place name found. Please try again.'); // Temporary alert for mobile debugging
+    if (!currentPlaceName) {
+      console.error('No placeName available');
+      alert('No location selected. Please go back and select a location.');
+      onClose();
       return;
     }
     
     try {
-      const url = `https://parking-0wap.onrender.com/api/slots?placeName=${encodeURIComponent(placeName)}&vehicleCategory=${encodeURIComponent(vehicleCategory)}`;
+      const url = `https://parking-0wap.onrender.com/api/slots?placeName=${encodeURIComponent(currentPlaceName)}&vehicleCategory=${encodeURIComponent(vehicleCategory)}`;
       console.log('Fetching from URL:', url);
       
       const response = await fetch(url);
@@ -183,6 +203,11 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
   };
 
   const handleBookSlotsClick = () => {
+    if (!currentPlaceName) {
+      alert('No location selected. Please go back and select a location.');
+      return;
+    }
+    
     if (validateForm()) {
       setShowSlotBooking(true);
     }
