@@ -68,19 +68,41 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email }) => {
     }
   }, [showSlotBooking, vehicleCategory]);
 
+  // Initial fetch when component mounts
+  useEffect(() => {
+    if (isOpen && showSlotBooking) {
+      fetchSlots();
+    }
+  }, [isOpen]);
+
   const fetchSlots = async () => {
     const placeName = localStorage.getItem('placeName');
+    if (!placeName) {
+      console.error('No placeName found in localStorage');
+      return;
+    }
+    
+    console.log('Fetching slots for place:', placeName, 'category:', vehicleCategory);
+    
     try {
-      const response = await fetch(`https://parking-0wap.onrender.com/api/slots?placeName=${placeName}&vehicleCategory=${vehicleCategory}`);
+      const response = await fetch(`https://parking-0wap.onrender.com/api/slots?placeName=${encodeURIComponent(placeName)}&vehicleCategory=${encodeURIComponent(vehicleCategory)}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
+      console.log('API response:', data);
+      
       if (data.success) {
-        console.log('Slots fetched:', data.slots); 
-        setSlots(data.slots.sort((a, b) => a.slotno - b.slotno)); 
+        const sortedSlots = [...data.slots].sort((a, b) => a.slotno - b.slotno);
+        console.log('Sorted slots:', sortedSlots);
+        setSlots(sortedSlots);
       } else {
-        console.error('Error fetching slots:', data.message);
+        console.error('API returned error:', data.message);
+        setSlots([]); // Reset slots on error to show empty state
       }
     } catch (error) {
       console.error('Error fetching slots:', error);
+      setSlots([]); // Reset slots on error to show empty state
     }
   };
 
