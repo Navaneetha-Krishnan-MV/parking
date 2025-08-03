@@ -30,8 +30,20 @@ function Signin() {
 
   const handleSignInWithGoogle = async () => {
     try {
+      // Clear any previous errors
+      setEmailError(false);
+      
+      console.log('Initiating Google Sign-In...');
+      
       // Sign in with Google using Firebase Auth
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider).catch(error => {
+        console.error('Popup error:', error);
+        if (error.code === 'auth/popup-closed-by-user') {
+          throw new Error('Sign-in popup was closed. Please try again.');
+        }
+        throw error;
+      });
+      
       const user = result.user;
       
       if (!user || !user.email) {
@@ -40,46 +52,110 @@ function Signin() {
       
       const email = user.email;
       const displayName = user.displayName || 'User';
+      const photoURL = user.photoURL || '';
+      
+      console.log('Google Sign-In Successful:', { email, displayName });
       
       // Update local state
       setEmail(email);
       setName(displayName);
       
-      // Store user data in localStorage
-      localStorage.setItem("email", email);
-      localStorage.setItem("name", displayName);
+      try {
+        // Store user data in localStorage
+        localStorage.setItem("email", email);
+        localStorage.setItem("name", displayName);
+        if (photoURL) {
+          localStorage.setItem("photoURL", photoURL);
+        }
+        console.log('User data stored in localStorage');
 
-      // Send user data to the backend
-      const response = await fetch('https://parking-0wap.onrender.com/api/registration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          email, 
-          displayName,
-          authProvider: 'google' 
-        }),
-      });
+        // Send user data to the backend
+        console.log('Sending user data to backend...');
+        const response = await fetch('https://parking-0wap.onrender.com/api/registration', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            email, 
+            displayName,
+            authProvider: 'google',
+            photoURL: photoURL || null
+          }),
+        });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to register user');
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.message || `Server responded with status ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        console.log('Backend registration successful:', responseData);
+
+        // Store auth token if provided
+        if (responseData.token) {
+          localStorage.setItem('token', responseData.token);
+        }
+
+        // Redirect to main page with user data
+        navigate('/main', { 
+          state: { 
+            email,
+            name: displayName,
+            isNewUser: responseData.isNewUser || false,
+            photoURL: photoURL || ''
+          } 
+        });
+        
+      } catch (error) {
+        console.error('Error in post-authentication:', error);
+        // Even if backend fails, proceed if we have user data
+        if (email) {
+          navigate('/main', { 
+            state: { 
+              email,
+              name: displayName,
+              photoURL: photoURL || ''
+            } 
+          });
+        } else {
+          throw error;
+        }
       }
-
-      const responseData = await response.json();
-      console.log('User registered:', responseData);
-
-      // Redirect to main page with user data
-      navigate('/main', { 
-        state: { 
-          email,
-          name: displayName,
-          isNewUser: responseData.isNewUser || false
-        } 
-      });
     } catch (error) {
-      console.error('Error signing in or registering user:', error);
+      console.error('Error in Google Sign-In:', error);
+      
+      // Handle specific error cases
+      let errorMessage = 'Failed to sign in with Google. ';
+      
+      if (error.code) {
+        switch (error.code) {
+          case 'auth/account-exists-with-different-credential':
+            errorMessage += 'An account already exists with this email but different sign-in method.';
+            break;
+          case 'auth/popup-closed-by-user':
+            errorMessage = 'Sign-in was canceled. Please try again.';
+            break;
+          case 'auth/cancelled-popup-request':
+            errorMessage = 'Only one popup request is allowed at a time.';
+            break;
+          case 'auth/popup-blocked':
+            errorMessage = 'Popup was blocked by your browser. Please allow popups for this site.';
+            break;
+          default:
+            errorMessage += error.message || 'Please try again later.';
+        }
+      } else {
+        errorMessage += error.message || 'Please try again later.';
+      }
+      
+      // Show error to user
+      alert(errorMessage);
+      
+      // Clear any stored data on error
+      localStorage.removeItem('email');
+      localStorage.removeItem('name');
+      localStorage.removeItem('photoURL');
     }
   };
 
