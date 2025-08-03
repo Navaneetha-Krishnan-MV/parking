@@ -35,7 +35,7 @@ function HomeBody(){
   
   return (
   
-    <div id="totalhome">
+    <div id="totalhome" className="overflow-hidden">
      <div className="flex flex-col md:flex-row items-center justify-between p-6 bg-gray-200 text-gray-800 min-h-screen" id="firsthome">
       <div className="text-center md:text-left max-w-md md:w-1/2 ml-9">
         <h1 className="text-6xl font-extrabold mb-4 text-gray-900">
@@ -204,7 +204,7 @@ function HomeBody(){
       <br />
       <h1 class="title" data-aos="zoom-out"  data-aos-duration="2000">Book Your Parking Spot with Ease!</h1>
       <br />
-      <p class="lead-text" data-aos="zoom-out"  data-aos-duration="2000">
+      <p  className="text-center text-gray-800 text-lg" data-aos="zoom-out"  data-aos-duration="2000">
       Welcome to ParkPurams's Vehicle Parking Booking System. Finding the perfect parking spot has never been easier! Whether you’re planning a visit to the city, heading to an event, or just need a reliable spot for your daily commute, our user-friendly booking system ensures you get the parking space you need without any hassle.
       </p>
     </div>
@@ -217,15 +217,7 @@ function HomeBody(){
         <img src={roadcar} alt="road car" id="moving-road" />
     </div> */}
 
-
-
-
-
-
-
-
-
-    <div className="bg-gray-900 mt-40 text-white py-16">
+    <div className="bg-gray-900 mt-10 text-white py-16">
       <div className="max-w-6xl mx-auto text-center">
         <h2 className="text-3xl font-semibold mb-8">
           We Take Pride in Our Numbers
@@ -327,8 +319,8 @@ function HomeBody(){
 
 
 
-<div class="main-container">
-    <div class="hero-section">
+    <div class="main-container ">
+    <div class="hero-section ">
       <div class="image-container" data-aos="fade-left"  data-aos-duration="2200">
         <img src={rightimg} class="responsive-image" alt="Bootstrap Themes"/>
       </div>

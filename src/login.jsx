@@ -98,27 +98,30 @@ function Login() {
 
   return (
     <div className="login-container">
-    <div className="image-section">
-      <img src={lo} alt="Sample" className="login-image" />
-    </div>
-    <div className="login-form">
-      <h1 className="login-title">Login</h1>
-      <form onSubmit={handleLogin}>
-        <div className="input-group1">
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className={emailError ? 'error' : ''}
-          />
-          {emailError && <p className="error-text">Invalid Email Format</p>}
-        </div>
-        <div className="input-group1">
-          <input
+      <div className="image-section">
+        <img src={lo} alt="Login Illustration" className="login-image" />
+      </div>
+      <div className="login-form">
+        <h1 className="login-title">Welcome Back</h1>
+        <p className="login-subtitle">Please enter your details to sign in</p>
+        
+        <form onSubmit={handleLogin}>
+          <div className="input-group1">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className={emailError ? 'error' : ''}
+            />
+            {emailError && <p className="error-text">Please enter a valid email address</p>}
+          </div>
+          
+          <div className="input-group1 password-wrapper">
+            <input
               type={showPassword ? "text" : "password"}
               id="password"
               name="password"
@@ -127,28 +130,52 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
               required
               className={passwordError ? 'error' : ''}
-          />
-          {passwordError && <p className="error-text">Wrong Password</p>}
-          <span id="eye"
+            />
+            <span 
               className="password-toggle-icon1" 
               onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
-        </div>
-       
-        <button type="submit" className="login-button">Login</button>
-        <button type="button" className="google-button-for-log" onClick={handleSignInWithGoogle}>
-          Log in With Google
-          <i className="fa-brands fa-google"></i>
-        </button>
-      </form>
-      <p className="signup-link">
-        New to our platform? <Link to="/signin">Sign up</Link>
-      </p>
-      {ema && <button onClick={out1}>Logout</button>}
+            {passwordError && <p className="error-text">Incorrect password. Please try again.</p>}
+          </div>
+          
+          <div className="forgot-password">
+            <Link to="/forgot-password">Forgot Password?</Link>
+          </div>
+          
+          <button type="submit" className="login-button">
+            Sign In
+          </button>
+          
+          <div className="divider">
+            <span>or</span>
+          </div>
+          
+          <button 
+            type="button" 
+            className="google-button-for-log" 
+            onClick={handleSignInWithGoogle}
+          >
+            <i className="fa-brands fa-google"></i>
+            Continue with Google
+          </button>
+          
+          <p className="signup-link">
+            Don't have an account? <Link to="/signin">Sign up</Link>
+          </p>
+          
+          {ema && (
+            <div className="logout-section">
+              <button onClick={out1} className="logout-button">
+                Logout
+              </button>
+            </div>
+          )}
+        </form>
+      </div>
     </div>
-  </div>
   );
 }
 

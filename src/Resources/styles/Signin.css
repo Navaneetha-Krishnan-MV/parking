@@ -2,60 +2,39 @@ body {
   margin: 0;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background-color: #f8f8f8;
-   color: #333;
+  color: #333;
+  overflow-x: hidden;
 }
 
 .signin-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  flex-direction: column;
+  min-height: 100vh;
   background-color: white;
-
+  padding: 20px;
 }
 
-.image-section-left,
-.image-section-right {
-  flex: 1;
+.image-section-left {
   display: flex;
   justify-content: center;
-  align-items: center;
-}
-.image-section-left img{
-  position: absolute;
-  width: 500px;
-  height: 360px;
-  margin-left: 130px;
-
-
-
-
+  margin-bottom: 20px;
 }
 
-
-.image-section-right{
-  position: relative;
-  left:-100px;
-  max-width: 400px;
-  width: 100%;
-  border-radius: 10px;
-
-
+.image-section-left img {
+  max-width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: contain;
 }
 
 .signin-form {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 800px;
-  padding: 20px;
-  background-color:white;
+  width: 100%;
+  max-width: 500px;
+  padding: 30px;
+  margin: 0 auto;
+  background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
-  left: 17%;
-  margin-left: -100px;
 }
 
 .signin-title {
@@ -63,32 +42,103 @@ body {
   font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
-  margin-left: -250px;
+  color: #333;
 }
 
 .input-group7 {
-  margin-bottom: 1rem;
-  margin-left: -100px;
+  margin-bottom: 1.5rem;
+  position: relative;
+  width: 100%;
 }
 
 .input-group7 input {
-  width: 300px !important;
-  padding: 10px;
-  margin-left: -150px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
   font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.input-group7 input:focus {
+  border-color: #ff914d;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 145, 77, 0.2);
 }
 
 .signin-button, .google-button {
-  width: 300px;
-  padding: 10px;
-  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
-  margin-left: -250px;
+  transition: all 0.3s ease;
+}
+
+.signin-button {
+  background-color: #ff914d;
+  color: white;
+}
+
+.signin-button:hover {
+  background-color: #e67a3a;
+}
+
+.google-button {
+  background-color: #4285f4;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.google-button:hover {
+  background-color: #3367d6;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-toggle-icon {
+  color: #666;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .signin-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 40px;
+  }
+
+  .image-section-left {
+    flex: 1;
+    max-width: 500px;
+    margin-right: 40px;
+    margin-bottom: 0;
+  }
+
+  .image-section-left img {
+    max-height: 500px;
+  }
+
+  .signin-form {
+    flex: 1;
+    max-width: 450px;
+    padding: 40px;
+  }
 }
 
 .signin-button {
@@ -112,7 +162,19 @@ body {
 .login-link {
   text-align: center;
   margin-top: 20px;
-  margin-left: -250px;
+  color: #666;
+}
+
+.login-link a {
+  color: #ff914d;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+  color: #e67a3a;
+  text-decoration: underline;
 }
 
 .login-link a {
@@ -143,14 +205,4 @@ input.error {
 .input-group7 .error {
   border-color: #d9534f; /* Red border to indicate error */
   background-color: #f8d7da; /* Light red background for error inputs */
-}
-.password-toggle-icon{
-  color: black;
-  height:200px;
-  position: relative;
-  top:-45px;
-  left:20px;
-
-
-
 }

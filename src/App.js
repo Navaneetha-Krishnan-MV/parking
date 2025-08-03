@@ -15,26 +15,27 @@ import MyBookings from './MyBookings.jsx';
 // In your routes definition
 
 const App = () => {
-
-
   return (
-    <div>
-    <Router>
-      <Header></Header>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/Help" element={<Help />} />
-        <Route path="/TermsandServices" element={<TermsandServices />} />
-        <Route path="/UserProfile" element={<UserProfile />} />
-        <Route path="/my-bookings" element={<MyBookings />} />
-
-        <Route path="/about" element={<About />} />
-        <Route path="/login" element={<Wholelogin />} />
-        <Route path="/main" element={<Main />} />
-        <Route path="/signin" element={<Signin />} />
-      </Routes>
-      <Footer></Footer>
-    </Router>
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Router>
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-grow w-full pb-32 md:pb-40">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/Help" element={<Help />} />
+              <Route path="/TermsandServices" element={<TermsandServices />} />
+              <Route path="/UserProfile" element={<UserProfile />} />
+              <Route path="/my-bookings" element={<MyBookings />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/login" element={<Wholelogin />} />
+              <Route path="/main" element={<Main />} />
+              <Route path="/signin" element={<Signin />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
     </div>
   );
 };

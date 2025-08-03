@@ -3,15 +3,17 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import img from "./Resources/parking-icon1.png";
 import "./Resources/styles/Header.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { User } from 'lucide-react';
+import { User, Menu, X } from 'lucide-react';
 
 function Header() {
   const navigate = useNavigate();
   const [email, setEmail] = useState(localStorage.getItem('email')); 
   const [showModal, setShowModal] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(require("./Resources/Aboutimages/aboutface.png"));
   const [displayName, setDisplayName] = useState('');
   const modalRef = useRef(null);
+  const menuRef = useRef(null);
 
   useEffect(() => {
     if (email) {
@@ -37,6 +39,15 @@ function Header() {
 
   const handleIconClick = () => {
     setShowModal(true);
+    setIsMenuOpen(false); // Close mobile menu when opening profile
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   const handleCloseModal = () => {
@@ -96,35 +107,66 @@ function Header() {
     <>
       <nav className="navbar">
         <div className="container">
-          <img src={img} alt="Logo" id="logo" />
-          <h1 id="headertitle">
-            <Link to="/" className="logo font-sans">
-              <span>PARKING </span><span>WEBSITE</span>
-            </Link>
-          </h1>
-          <ul className="nav-links">
-            <li className="font-sans"><Link to="/">Home</Link></li>
-            <li><Link  to="/about">About</Link></li>
+          <div className="flex items-center justify-between w-full md:w-auto">
+            <div className="flex items-center">
+              <img src={img} alt="Logo" id="logo" className="h-12 w-auto" />
+              <h1 id="headertitle" className="ml-2 mt-3">
+                <Link to="/" className="logo font-sans">
+                  <span>PARKING </span><span>WEBSITE</span>
+                </Link>
+              </h1>
+            </div>
+            
+            {/* Mobile menu button */}
+            <button 
+              onClick={toggleMenu}
+              className="md:hidden text-white focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
+          
+          <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`} ref={menuRef}>
+            <li className="font-sans"><Link to="/" onClick={closeMenu}>Home</Link></li>
+            <li><Link to="/about" onClick={closeMenu}>About</Link></li>
             {email ? (
               <>
-                <li><Link to="/main" id="main-thing">Find Parking</Link></li>
-                <User
-      className="w-[50px] h-6 hover:text-green-600 cursor-pointer rounded-lg"
-      onClick={handleIconClick}
-    />              </>
+                <li><Link to="/main" id="main-thing" onClick={closeMenu}>Find Parking</Link></li>
+                <li className="md:hidden">
+                  <button 
+                    onClick={handleIconClick}
+                    className="flex items-center text-white hover:text-green-600 cursor-pointer py-2 px-4 rounded-lg w-full text-left"
+                  >
+                    <User className="w-5 h-5 mr-2" />
+                    <span>My Account</span>
+                  </button>
+                </li>
+              </>
             ) : (
               <>
-                <li><Link to="/login">Login</Link></li>
-                <li><Link to="/signin">Sign up</Link></li>
+                <li><Link to="/login" onClick={closeMenu}>Login</Link></li>
+                <li><Link to="/signin" onClick={closeMenu}>Sign up</Link></li>
               </>
             )}
           </ul>
+          
+          {/* Desktop profile icon */}
+          {/* {email && (
+            <div className="hidden md:block">
+              <User 
+                className="w-8 h-8 text-white hover:text-green-600 cursor-pointer"
+                onClick={handleIconClick}
+                aria-label="User profile"
+              />
+            </div>
+          )} */}
         </div>
       </nav>
 
       {showModal && (
-       <div id="userModal" className="fixed inset-0 flex items-start justify-end bg-black bg-opacity-40 backdrop-blur-sm z-50">
-       <div ref={modalRef} className="bg-gray-800 text-white rounded-lg w-72 p-6 mt-16 mr-4">
+       <div id="userModal" className="fixed inset-0 flex items-start justify-end bg-black bg-opacity-40 backdrop-blur-sm z-50 md:items-center md:justify-center md:bg-opacity-70">
+       <div ref={modalRef} className="bg-gray-800 text-white rounded-lg w-full max-w-xs md:max-w-sm p-6 mt-16 mr-4 md:mt-0 md:mr-0">
          <div className="flex flex-col items-center mb-6">
            <img src={profilePhoto} alt="Profile" className="w-20 h-20 rounded-full mb-4" id="p" />
            <span className="text-lg font-semibold">Hi, {displayName}</span>

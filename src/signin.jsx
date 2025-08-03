@@ -30,50 +30,54 @@ function Signin() {
 
   const handleSignInWithGoogle = async () => {
     try {
-      // Get the current origin dynamically
-      const currentOrigin = window.location.origin;
+      // Sign in with Google using Firebase Auth
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
       
-      // Set the redirect URL based on the current environment
-      const redirectUrl = currentOrigin.includes('localhost') 
-        ? 'http://localhost:3000' 
-        : currentOrigin;
+      if (!user || !user.email) {
+        throw new Error('No user information received from Google');
+      }
       
-      // Update the provider with the correct redirect URL
-      const customProvider = {
-        ...provider,
-        customParameters: {
-          redirect_uri: redirectUrl
-        }
-      };
-
-      const result = await signInWithPopup(auth, customProvider);
-      const email = result.user.email;
-      const displayName = result.user.displayName || 'User';
+      const email = user.email;
+      const displayName = user.displayName || 'User';
       
+      // Update local state
       setEmail(email);
       setName(displayName);
       
+      // Store user data in localStorage
       localStorage.setItem("email", email);
       localStorage.setItem("name", displayName);
 
-      // Send user data to the backend - using relative URL
-      const response = await fetch('/api/registration', {
+      // Send user data to the backend
+      const response = await fetch('https://parking-0wap.onrender.com/api/registration', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, displayName }),
+        body: JSON.stringify({ 
+          email, 
+          displayName,
+          authProvider: 'google' 
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to register user');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to register user');
       }
 
-      const r = await response.json();
-      console.log('User registered:', r);
+      const responseData = await response.json();
+      console.log('User registered:', responseData);
 
-      // Redirect to main page
-      navigate('/main', { state: { email } });
+      // Redirect to main page with user data
+      navigate('/main', { 
+        state: { 
+          email,
+          name: displayName,
+          isNewUser: responseData.isNewUser || false
+        } 
+      });
     } catch (error) {
       console.error('Error signing in or registering user:', error);
     }
@@ -140,71 +144,96 @@ function Signin() {
   return (
     <div className="signin-container">
       <div className="image-section-left">
-        <img src={lo} alt="Left side visual" />
+        <img src={lo} alt="Sign Up Illustration" className="signin-image" />
       </div>
       <div className="signin-form">
-        <h1 className="signin-title">Create an account</h1>
+        <h1 className="signin-title">Create an Account</h1>
+        <p className="signin-subtitle">Join us today and get started</p>
+        
         <form onSubmit={handleSignUp} method="POST">
           <div className="input-group7">
             <input
-              type="text"
-              id="username"
-              name="username"
+              type="email"
+              id="email"
+              name="email"
               placeholder="Enter your email"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
               className={emailError ? 'error' : ''}
             />
-            {emailError && <p className="error-text">Invalid Email Format</p>}
+            {emailError && <p className="error-text">Please enter a valid email address</p>}
           </div>
+          
           <div className="input-group7 password-wrapper">
             <input
               type={showPassword ? "text" : "password"}
               id="password"
               name="password"
-              placeholder="Enter your password"
+              placeholder="Create a password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               className={passwordError ? 'error' : ''}
-              
             />
-          
-            
-            {passwordError && <p className="error-text">Password incorrect format</p>}
-          </div>
-          <span id="eye"
+            <span 
               className="password-toggle-icon" 
               onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
+            {passwordError && (
+              <p className="error-text">
+                Password must be at least 8 characters long and include both letters and numbers
+              </p>
+            )}
+          </div>
+          
           <div className="input-group7">
             <input
-              type="text"
+              type="tel"
               id="phonenumber"
               name="phonenumber"
-              placeholder="Enter your mobile number"
+              placeholder="Enter your mobile number (e.g., 9876543210)"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
               className={phoneNumberError ? 'error' : ''}
+              maxLength="10"
+              pattern="[0-9]{10}"
             />
-            {phoneNumberError && <p className="error-text">Phone number must be 10 digits</p>}
+            {phoneNumberError && (
+              <p className="error-text">Please enter a valid 10-digit phone number</p>
+            )}
           </div>
-          <button type="submit" className="signin-button">Sign in</button>
-          <button type="button" className="google-button" onClick={handleSignInWithGoogle}>
-            Sign in With Google
-            <i className="fa-brands fa-google"></i>
+          
+          <button type="submit" className="signin-button">
+            Create Account
           </button>
+          
+          <div className="divider">
+            <span>or</span>
+          </div>
+          
+          <button 
+            type="button" 
+            className="google-button" 
+            onClick={handleSignInWithGoogle}
+          >
+            <i className="fa-brands fa-google"></i>
+            Sign up with Google
+          </button>
+
+          <p className="login-link">
+            Already have an account? <Link to="/login">Log in here</Link>
+          </p>
+          
+          <div className="terms">
+            By signing up, you agree to our <Link to="/terms">Terms of Service</Link> and{' '}
+            <Link to="/privacy">Privacy Policy</Link>.
+          </div>
         </form>
-        <p className="login-link">
-          Are you an existing user? <Link to='/login'>Log in</Link>
-        </p>
-      </div>
-      <div className="image-section-right">
-        <img src={rightImage} alt="Right side visual" />
       </div>
     </div>
   );

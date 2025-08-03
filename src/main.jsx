@@ -14,27 +14,44 @@ const DistrictRegionSelector = () => {
     const [parkingPlaces, setParkingPlaces] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCapacity, setSelectedCapacity] = useState({ tcapacity: 0, fcapacity: 0 });
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [feedback, setFeedback] = useState({ email: '', message: '' });
+    const [feedbackStatus, setFeedbackStatus] = useState('');
 
     useEffect(() => {
-        if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-            console.log('Page was reloaded');
-        } else {
-            window.location.reload();
-        }
+        // Remove the automatic reload on mount - this can cause issues
+        // if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+        //     console.log('Page was reloaded');
+        // } else {
+        //     window.location.reload();
+        // }
     }, []);
 
     useEffect(() => {
-        AOS.init({ duration: 1000 });
+        AOS.init({ 
+            duration: 1000,
+            once: true, // Animation happens only once
+            offset: 100 // Start animation 100px before element is in view
+        });
     }, []);
 
     useEffect(() => {
-        axios.get('https://parking-0wap.onrender.com/api/parking-places')
-            .then(response => {
+        const fetchParkingPlaces = async () => {
+            setIsLoading(true);
+            setError('');
+            try {
+                const response = await axios.get('https://parking-0wap.onrender.com/api/parking-places');
                 setParkingPlaces(response.data);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('There was an error fetching the parking places!', error);
-            });
+                setError('Unable to load parking places. Please try again later.');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchParkingPlaces();
     }, []);
 
     const handleCityChange = (event) => {
@@ -48,52 +65,77 @@ const DistrictRegionSelector = () => {
         setRegion(selectedRegion);
     };
 
-    const handleBookClick = (tcapacity, fcapacity, placeName) => {
-        localStorage.setItem('placeName', placeName); // Store place name in localStorage
+    const handleBookClick = async (tcapacity, fcapacity, placeName) => {
+        // Store place name in memory instead of localStorage
         setIsModalOpen(true);
-        setSelectedCapacity({ tcapacity, fcapacity });
+        setSelectedCapacity({ tcapacity, fcapacity, placeName });
 
         const userEmail = 'user-email@gmail.com'; // Replace with actual user email
 
-        axios.post('https://parking-0wap.onrender.com/send-booking-email', {
-            placeName,
-            tcapacity,
-            fcapacity,
-            userEmail
-        })
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(error => {
+        try {
+            await axios.post('https://parking-0wap.onrender.com/send-booking-email', {
+                placeName,
+                tcapacity,
+                fcapacity,
+                userEmail
+            });
+            console.log('Booking email sent successfully');
+        } catch (error) {
             console.error('There was an error sending the email!', error);
-        });
+        }
+    };
+
+    const handleFeedbackChange = (e) => {
+        const { name, value } = e.target;
+        setFeedback(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleFeedbackSubmit = async (e) => {
+        e.preventDefault();
+        setFeedbackStatus('sending');
+
+        try {
+            // Replace with your actual feedback endpoint
+            await axios.post('https://parking-0wap.onrender.com/api/feedback', feedback);
+            setFeedbackStatus('success');
+            setFeedback({ email: '', message: '' });
+            setTimeout(() => setFeedbackStatus(''), 3000);
+        } catch (error) {
+            console.error('Error sending feedback:', error);
+            setFeedbackStatus('error');
+            setTimeout(() => setFeedbackStatus(''), 3000);
+        }
     };
 
     const filterParkingPlaces = () => {
         if (!city || !region) return [];
-
         return parkingPlaces.filter(place => place.city === city && place.region === region);
     };
 
     const renderParkingPlaces = (places) => {
         return places.map((place, index) => (
             <div
-                key={index}
+                key={`${place.name}-${index}`}
                 className={`${styles.parkingItem} ${index % 2 === 0 ? styles.left : styles.right}`}
                 data-aos={index % 2 === 0 ? "fade-right" : "fade-left"}
+                data-aos-delay={index * 100}
             >
-                <h3>Parking name : {place.name}</h3>
-                <p>Address: {place.address}</p>
-                <p>Two wheeler Capacity: {place.tcapacity} slots</p>
-                <p>Four wheeler Capacity: {place.fcapacity} slots</p>
-                <p>Features: {place.features}</p>
-                <p>Available Two Wheeler Capacity : {place.atcapacity} slots</p>
-                <p>Available Four Wheeler Capacity : {place.afcapacity} slots</p>
+                <h3>Parking name: {place.name}</h3>
+                <p><strong>Address:</strong> {place.address}</p>
+                <p><strong>Two wheeler Capacity:</strong> {place.tcapacity} slots</p>
+                <p><strong>Four wheeler Capacity:</strong> {place.fcapacity} slots</p>
+                <p><strong>Features:</strong> {place.features}</p>
+                <p><strong>Available Two Wheeler:</strong> {place.atcapacity || 0} slots</p>
+                <p><strong>Available Four Wheeler:</strong> {place.afcapacity || 0} slots</p>
                 <button 
                     className={styles.bookButton} 
-                    onClick={() => handleBookClick(place.tcapacity, place.fcapacity, place.name)} // Pass place.name
+                    onClick={() => handleBookClick(place.tcapacity, place.fcapacity, place.name)}
+                    aria-label={`Book parking at ${place.name}`}
                 >
-                    Book
+                    Book Now
                 </button>
             </div>
         ));
@@ -102,19 +144,30 @@ const DistrictRegionSelector = () => {
     const filteredPlaces = filterParkingPlaces();
 
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.container}>
+        <div className={`${styles.wrapper} pb-12`}>
+            <div className={`${styles.container} py-8`}>
                 <div className={styles.imageAndFormContainer}>
                     <div className={styles.imageContainer}>
-                        <img src={C} alt="Car Icon" className={styles.image} />
+                        <img 
+                            src={C} 
+                            alt="Parking illustration" 
+                            className={styles.image}
+                            loading="lazy"
+                        />
                     </div>
                     <div className={styles.formContainer}>
                         <div className={styles.header}>
+                            <h1 className={styles.title}>Book Your Parking Slot</h1>
                             <div className={styles.dropdownContainer}>
                                 <div className={styles.dropdown}>
                                     <label htmlFor="city">Select your city:</label>
-                                    <select id="city" value={city} onChange={handleCityChange}>
-                                        <option value="">None</option>
+                                    <select 
+                                        id="city" 
+                                        value={city} 
+                                        onChange={handleCityChange}
+                                        aria-label="Select city"
+                                    >
+                                        <option value="">Choose a city</option>
                                         <option value="Chennai">Chennai</option>
                                         <option value="Madurai">Madurai</option>
                                         <option value="Coimbatore">Coimbatore</option>
@@ -123,8 +176,13 @@ const DistrictRegionSelector = () => {
                                 {city && (
                                     <div className={styles.dropdown}>
                                         <label htmlFor="region">Select your region:</label>
-                                        <select id="region" value={region} onChange={handleRegionChange}>
-                                            <option value="">None</option>
+                                        <select 
+                                            id="region" 
+                                            value={region} 
+                                            onChange={handleRegionChange}
+                                            aria-label="Select region"
+                                        >
+                                            <option value="">Choose a region</option>
                                             {city === 'Chennai' && (
                                                 <>
                                                     <option value="Chennai North">Chennai North</option>
@@ -153,21 +211,41 @@ const DistrictRegionSelector = () => {
                                     </div>
                                 )}
                             </div>
-                            <h1 className={styles.title}>Book your slots</h1>
                         </div>
-                        {city && !region && (
+
+                        {isLoading && (
                             <div className={styles.results}>
-                                Select a region to see results.
+                                Loading parking places...
                             </div>
                         )}
-                        {!city && (
-                            <div className={styles.results}>
-                                No results
+
+                        {error && (
+                            <div className={styles.results} style={{backgroundColor: '#fee', color: '#c33'}}>
+                                {error}
                             </div>
                         )}
+
+                        {city && !region && !isLoading && (
+                            <div className={styles.results}>
+                                Please select a region to see available parking spaces.
+                            </div>
+                        )}
+
+                        {!city && !isLoading && (
+                            <div className={styles.results}>
+                                Select a city to get started.
+                            </div>
+                        )}
+
+                        {region && filteredPlaces.length === 0 && !isLoading && (
+                            <div className={styles.results}>
+                                No parking spaces available in {region}. Please try another region.
+                            </div>
+                        )}
+
                         {region && filteredPlaces.length > 0 && (
                             <div className={styles.details}>
-                                <h2 id="align">Parking Places in {region}</h2>
+                                <h2 id="align">Available Parking in {region}</h2>
                                 <div className={styles.parkingDetails}>
                                     {renderParkingPlaces(filteredPlaces)}
                                 </div>
@@ -175,66 +253,108 @@ const DistrictRegionSelector = () => {
                         )}
                     </div>
                 </div>
+                
                 <PaymentModal 
                     isOpen={isModalOpen} 
                     onClose={() => setIsModalOpen(false)} 
                     tcapacitys={selectedCapacity.tcapacity} 
-                    fcapacitys={selectedCapacity.fcapacity}  
+                    fcapacitys={selectedCapacity.fcapacity}
+                    placeName={selectedCapacity.placeName}
                 />
             </div>
             
-            {/* Feedback Section */}
-            <div className="container mx-auto p-6 flex flex-wrap" id="full">
-                <div className="left-section w-full md:w-7/12 pr-4">
-                    <h1 className="text-5xl font-bold mb-6" data-aos="zoom-out" data-aos-duration="1500">Your Opinion</h1>
-                    <div className="black-box bg-gray-800 text-white p-6 rounded-lg mt-6 relative" data-aos="fade-right" data-aos-duration="1500">
-                        <img src={feedbackimg} alt="Car Icon" className="mb-4 mx-auto" />
-                        <h2 className="text-2xl font-semibold mb-4">Parking space seekers</h2>
-                        <p className="text-lg">
-                            A parking space seeker can find parking immediately or schedule it for later...
+            {/* Feedback Section - Mobile Optimized */}
+            <div className="mx-auto lg:w-3/4  p-4 sm:p-6 flex flex-wrap" id="full">
+                <div className="w-full lg:w-7/12 pr-0 lg:pr-4 mb-6 lg:mb-0">
+                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-center lg:text-left" data-aos="zoom-out" data-aos-duration="1500">
+                        Your Opinion Matters
+                    </h1>
+                    
+                    <div className="bg-gray-800 text-white p-4 sm:p-6 rounded-lg relative" data-aos="fade-right" data-aos-duration="1500">
+                        <img 
+                            src={feedbackimg} 
+                            alt="Feedback illustration" 
+                            className="mb-4 mx-auto max-w-full h-auto rounded"
+                            loading="lazy"
+                        />
+                        <h2 className="text-xl sm:text-2xl font-semibold mb-4">Parking Space Seekers</h2>
+                        <p className="text-sm sm:text-lg mb-6">
+                            Find parking immediately or schedule it for later. Your feedback helps us improve our service.
                         </p>
-                        <div className="max-w-lg mx-auto p-6 bg-gray-900 rounded-lg mt-10">
-                            <h2 className="text-2xl font-bold text-center text-gray-300 mb-4">We Value Your Feedback</h2>
-                            <form className="space-y-6">
+                        
+                        <div className="max-w-lg mx-auto p-4 sm:p-6 bg-gray-900 rounded-lg">
+                            <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-300 mb-4">
+                                We Value Your Feedback
+                            </h2>
+                            <form className="space-y-4 sm:space-y-6" onSubmit={handleFeedbackSubmit}>
                                 <div>
-                                    <label htmlFor="email" className="block text-sm font-medium text-gray-300">Your Email</label>
+                                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                                        Your Email
+                                    </label>
                                     <input
                                         type="email"
                                         id="email"
                                         name="email"
-                                        className="mt-1 p-2 w-full border border-gray-600 rounded-md bg-gray-800 text-gray-300"
-                                        placeholder="your-email"
+                                        value={feedback.email}
+                                        onChange={handleFeedbackChange}
+                                        className="w-full p-3 border border-gray-600 rounded-md bg-gray-800 text-gray-300 focus:border-blue-500 focus:outline-none transition-colors"
+                                        placeholder="your-email@example.com"
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="feedback" className="block text-sm font-medium text-gray-300">Your Feedback</label>
+                                    <label htmlFor="feedback" className="block text-sm font-medium text-gray-300 mb-2">
+                                        Your Feedback
+                                    </label>
                                     <textarea
                                         id="feedback"
-                                        name="feedback"
+                                        name="message"
+                                        value={feedback.message}
+                                        onChange={handleFeedbackChange}
                                         rows="4"
-                                        className="mt-1 p-2 w-full border border-gray-600 rounded-md bg-gray-800 text-gray-300"
-                                        placeholder="Your feedback message"
+                                        className="w-full p-3 border border-gray-600 rounded-md bg-gray-800 text-gray-300 focus:border-blue-500 focus:outline-none transition-colors resize-vertical"
+                                        placeholder="Share your experience with us..."
                                         required
                                     />
                                 </div>
                                 <div>
                                     <button
-                                        type="button"
-                                        className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg"
+                                        type="submit"
+                                        disabled={feedbackStatus === 'sending'}
+                                        className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200"
                                     >
-                                        Send Feedback
+                                        {feedbackStatus === 'sending' ? 'Sending...' : 'Send Feedback'}
                                     </button>
+                                    {feedbackStatus === 'success' && (
+                                        <p className="text-green-400 text-sm mt-2 text-center">
+                                            Thank you! Your feedback has been sent.
+                                        </p>
+                                    )}
+                                    {feedbackStatus === 'error' && (
+                                        <p className="text-red-400 text-sm mt-2 text-center">
+                                            Sorry, there was an error. Please try again.
+                                        </p>
+                                    )}
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div className="grey-box bg-sky-500 text-center p-6 rounded-lg w-full md:w-5/12 mt-6 md:mt-0" data-aos="zoom-out" data-aos-duration="1500">
-                    <img src={ppimg} alt="Parking Icon" className="mb-4 mx-auto" />
-                    <h2 className="text-2xl font-semibold mb-4">Parking space providers</h2>
-                    <p className="text-lg text-gray-700 mb-6">A person can be both a space provider and a parking seeker...</p>
-                    <button className="bg-green-400 text-black font-semibold py-2 px-4 rounded-full hover:bg-blue-600 hover:text-white transition duration-300">Get Started</button>
+                
+                <div className="w-full lg:mt-80 lg:h-1/2 lg:w-5/12 bg-sky-500 text-center p-4 sm:p-6 rounded-lg" data-aos="zoom-out" data-aos-duration="1500">
+                    <img 
+                        src={ppimg} 
+                        alt="Parking provider illustration" 
+                        className="mb-4 mx-auto max-w-full h-auto"
+                        loading="lazy"
+                    />
+                    <h2 className="text-xl sm:text-2xl font-semibold mb-4">Parking Space Providers</h2>
+                    <p className="text-sm sm:text-lg text-gray-700 mb-6">
+                        Be both a space provider and a parking seeker. Join our platform to maximize your parking assets.
+                    </p>
+                    <button className="bg-green-400 text-black font-semibold py-3 px-6 rounded-full hover:bg-green-500 hover:text-white transition duration-300 text-sm sm:text-base">
+                        Get Started
+                    </button>
                 </div>
             </div>
         </div>
@@ -242,4 +362,3 @@ const DistrictRegionSelector = () => {
 };
 
 export default DistrictRegionSelector;
-

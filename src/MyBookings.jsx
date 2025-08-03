@@ -135,7 +135,7 @@ const MyBookings = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className=" mx-auto  px-4 py-8">
       <div className="max-w-md mx-auto space-y-6">
         <button
           onClick={fetchBookingsByEmail}

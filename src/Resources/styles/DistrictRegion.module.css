@@ -1,11 +1,12 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 16px;
     box-sizing: border-box;
-}
-
-.container {
+    min-height: 100vh;
+  }
+  
+  .container {
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -13,128 +14,309 @@
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-}
-
-.imageAndFormContainer {
+  }
+  
+  .imageAndFormContainer {
     display: flex;
     align-items: flex-start;
     width: 100%;
-    flex-wrap: wrap; 
-}
-
-.imageContainer {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .imageContainer {
     flex: 1;
+    min-width: 250px;
     max-width: 300px;
-    margin-right: 20px;
-    margin-bottom: 20px; 
-}
-
-.image {
+    width: 100%;
+  }
+  
+  .image {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 8px; /* Optional: add rounded corners */
-}
-
-.formContainer {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .formContainer {
     flex: 2;
-    max-width: calc(100% - 320px);
+    min-width: 300px;
+    width: 100%;
     overflow: hidden;
-}
-
-.header {
-    margin-bottom: 20px;
-}
-
-.dropdownContainer {
+  }
+  
+  .header {
+    margin-bottom: 24px;
+  }
+  
+  .dropdownContainer {
     display: flex;
     flex-direction: column;
-}
-
-.dropdown {
-    margin-bottom: 10px;
-}
-
-.dropdown select {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-.title {
-    font-size: 24px;
-    font-weight: bold;
+    gap: 16px;
     margin-bottom: 20px;
-}
-
-.results {
-    padding: 20px;
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 20px; 
-}
-
-.details {
-    padding: 20px;
-}
-
-.parkingDetails {
+  }
+  
+  .dropdown {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.parkingItem {
-    background-color: #fff;
-    border: 1px solid #ddd;
+    flex-direction: column;
+  }
+  
+  .dropdown label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .dropdown select {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 2px solid #e1e5e9;
     border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: calc(50% - 20px); 
     box-sizing: border-box;
-}
-
-.parkingItem.left {
-    align-self: flex-start;
-}
-
-.parkingItem.right {
-    align-self: flex-end;
-}
-
-.bookButton {
-    background-color: #007bff;
+    background-color: #fff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px;
+    padding-right: 40px;
+  }
+  
+  .dropdown select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  }
+  
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+    text-align: center;
+  }
+  
+  .results {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: #6c757d;
+  }
+  
+  .details {
+    padding: 0;
+    margin-top: 24px;
+  }
+  
+  .details h2 {
+    margin-bottom: 24px;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  .parkingDetails {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr;
+  }
+  
+  .parkingItem {
+    background-color: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .parkingItem::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #007bff, #0056b3);
+  }
+  
+  .parkingItem:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+  
+  .parkingItem h3 {
+    margin: 0 0 16px 0;
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+  .parkingItem p {
+    margin: 8px 0;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .bookButton {
+    background: linear-gradient(135deg, #007bff, #0056b3);
     color: white;
     border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
+    border-radius: 8px;
+    padding: 12px 24px;
     cursor: pointer;
-    transition: background-color 0.3s ease; 
-}
-
-.bookButton:hover {
-    background-color: #0056b3;
-}
-
-
-
-.details h2 {
-    margin-bottom: 1rem;
-    color: #333;
-    font-size: 1.75rem; 
-}
-
-#balance {
-    height: 300px !important;
-    margin-bottom: 20px; 
-}
-
-.dropdown label {
-    display: block;
-    margin-bottom: 5px;
+    transition: all 0.3s ease;
     font-size: 16px;
-}
+    font-weight: 600;
+    width: 100%;
+    margin-top: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .bookButton:hover {
+    background: linear-gradient(135deg, #0056b3, #004085);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  }
+  
+  .bookButton:active {
+    transform: translateY(0);
+  }
+  
+  #balance {
+    height: 300px !important;
+    margin-bottom: 20px;
+  }
+  
+  /* Feedback section styles */
+  #full {
+    margin-top: 40px;
+    padding: 20px 0;
+  }
+  
+  /* Mobile Responsive Styles */
+  @media (max-width: 768px) {
+    .wrapper {
+      padding: 12px;
+    }
+    
+    .imageAndFormContainer {
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .imageContainer {
+      max-width: 100%;
+      margin-right: 0;
+      order: -1;
+    }
+    
+    .formContainer {
+      max-width: 100%;
+    }
+    
+    .title {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    
+    .dropdown select {
+      font-size: 16px;
+      padding: 14px 16px;
+      padding-right: 44px;
+    }
+    
+    .details h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .parkingItem {
+      padding: 20px;
+    }
+    
+    .parkingItem h3 {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+    
+    .parkingItem p {
+      font-size: 14px;
+      margin: 6px 0;
+    }
+    
+    .bookButton {
+      padding: 14px 20px;
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .wrapper {
+      padding: 8px;
+    }
+    
+    .title {
+      font-size: 20px;
+    }
+    
+    .parkingItem {
+      padding: 16px;
+    }
+    
+    .parkingItem h3 {
+      font-size: 16px;
+    }
+    
+    .parkingItem p {
+      font-size: 13px;
+    }
+    
+    .dropdown select {
+      padding: 12px 14px;
+      padding-right: 40px;
+      font-size: 16px;
+    }
+  }
+  
+  /* Large screens */
+  @media (min-width: 992px) {
+    .parkingDetails {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .parkingItem.left {
+      justify-self: start;
+    }
+    
+    .parkingItem.right {
+      justify-self: end;
+    }
+  }
+  
+  /* Extra large screens */
+  @media (min-width: 1200px) {
+    .wrapper {
+      padding: 24px;
+    }
+    
+    .imageAndFormContainer {
+      gap: 32px;
+    }
+  }
