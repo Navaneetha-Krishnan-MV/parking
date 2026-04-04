@@ -16,8 +16,6 @@ const phoneNumberRegex = /^\+91\d{10}$/; // Validates +91 followed by 10 digits
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/; // Allow special characters in the password
 
 function Signin() {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -55,10 +53,6 @@ function Signin() {
       const photoURL = user.photoURL || '';
       
       console.log('Google Sign-In Successful:', { email, displayName });
-      
-      // Update local state
-      setEmail(email);
-      setName(displayName);
       
       try {
         // Store user data in localStorage
@@ -209,13 +203,10 @@ function Signin() {
     const storedEmail = localStorage.getItem("email") || '';
     const storedName = localStorage.getItem("name") || '';
 
-    setEmail(storedEmail);
-    setName(storedName);
-
     if (storedEmail && storedName) {
       navigate('/main', { state: { email: storedEmail } });
     }
-  }, [email, name, navigate]);
+  }, [navigate]);
 
   return (
     <div className="signin-container">

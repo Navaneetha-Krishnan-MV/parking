@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import img from "./Resources/parking-icon1.png";
 import "./Resources/styles/Header.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -7,13 +8,19 @@ import { User, Menu, X } from 'lucide-react';
 
 function Header() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState(localStorage.getItem('email')); 
+  const location = useLocation();
+  const [email, setEmail] = useState(localStorage.getItem('email'));
   const [showModal, setShowModal] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(require("./Resources/Aboutimages/aboutface.png"));
   const [displayName, setDisplayName] = useState('');
   const modalRef = useRef(null);
   const menuRef = useRef(null);
+
+  // Re-read auth state from localStorage on every route change
+  useEffect(() => {
+    setEmail(localStorage.getItem('email'));
+  }, [location.pathname]);
 
   useEffect(() => {
     if (email) {

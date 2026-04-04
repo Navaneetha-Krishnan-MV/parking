@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './Resources/styles/DistrictRegion.module.css';
 import AOS from 'aos';
@@ -65,24 +65,9 @@ const DistrictRegionSelector = () => {
         setRegion(selectedRegion);
     };
 
-    const handleBookClick = async (tcapacity, fcapacity, placeName) => {
-        // Store place name in memory instead of localStorage
-        setIsModalOpen(true);
+    const handleBookClick = (tcapacity, fcapacity, placeName) => {
         setSelectedCapacity({ tcapacity, fcapacity, placeName });
-
-        const userEmail = 'user-email@gmail.com'; // Replace with actual user email
-
-        try {
-            await axios.post('https://parking-0wap.onrender.com/send-booking-email', {
-                placeName,
-                tcapacity,
-                fcapacity,
-                userEmail
-            });
-            console.log('Booking email sent successfully');
-        } catch (error) {
-            console.error('There was an error sending the email!', error);
-        }
+        setIsModalOpen(true);
     };
 
     const handleFeedbackChange = (e) => {

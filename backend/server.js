@@ -13,6 +13,20 @@ dotenv.config();
 const app = express();
 const port = 5000;
 
+// Create transporter once at startup — not per-request
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // STARTTLS
+  auth: {
+    user: 'parkpuram7@gmail.com',
+    pass: 'vznfgdwkvauaiomn',
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
+
 
 // const pool = new Pool({
 //   user: 'postgres',
@@ -38,7 +52,7 @@ const corsOptions = {
     // List of allowed origins
     const allowedOrigins = [
       'http://localhost:3000',
-      'https://parkpuram.vercel.app/login', // Replace with your Vercel URL
+      'https://parkpuram.vercel.app',
       'https://parking-0wap.onrender.com'
     ];
     
@@ -411,15 +425,6 @@ app.post('/send-booking-email', async (req, res) => {
   } = req.body;
 
   console.log('Received booking details:', req.body);
-
-  // Configure the SMTP transporter
-  const transporter = nodemailer.createTransport({
-    service: 'Gmail', // or use SMTP configuration for custom services
-    auth: {
-      user: 'parkpuram7@gmail.com',
-      pass: 'vznfgdwkvauaiomn',
-    },
-  });
 
   // HTML template for the email
   const emailHTML = `

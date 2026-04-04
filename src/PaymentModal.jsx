@@ -2,46 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Resources/styles/PaymentModal.css";
 
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString();
-};
+const BASE_URL = 'https://parking-0wap.onrender.com';
+
+const formatDate = (dateString) => new Date(dateString).toLocaleDateString();
 
 const sendBookingEmail = async (booking) => {
   try {
-    const formattedBookingDate = formatDate(booking.booking_date);
-    const response = await fetch('https://parking-0wap.onrender.com/send-booking-email', {
+    await fetch(`${BASE_URL}/send-booking-email`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         placeName: booking.place_name,
         vehicleNo: booking.vehicle_no,
         vehicleCategory: booking.vehicle_category,
         startTime: booking.start_time,
         endTime: booking.end_time,
-        bookingDate: formattedBookingDate,
+        bookingDate: formatDate(booking.booking_date),
         slot: booking.slot,
         email: booking.email,
       }),
     });
-
-    const data = await response.json();
-    if (data.success) {
-      console.log('Email sent successfully');
-    } else {
-      console.error('Error sending email:', data.message);
-    }
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Error sending booking email:', error);
   }
 };
 
-const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email, placeName: propPlaceName }) => {
-  const [showModal, setShowModal] = useState(true);
-  const [bookingConfirmed, setBookingConfirmed] = useState(false);
-  const [isBlurred, setIsBlurred] = useState(false);
+const PaymentModal = ({ isOpen, onClose, placeName: propPlaceName }) => {
   const [vehicleNo, setVehicleNo] = useState('');
   const [bookingDate, setBookingDate] = useState('');
   const [startTime, setStartTime] = useState('');
@@ -49,235 +35,239 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email, placeNam
   const [vehicleCategory, setVehicleCategory] = useState('Two Wheeler');
   const [showSlotBooking, setShowSlotBooking] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const [slots, setSlots] = useState(null); // null means loading, [] means loaded but no slots
+  const [slots, setSlots] = useState(null);
   const [currentPlaceName, setCurrentPlaceName] = useState('');
-  const [amount, setAmount] = useState(50);
+  const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (vehicleCategory === 'Two Wheeler') {
-      setAmount(50);
-    } else {
-      setAmount(200);
-    }
-  }, [vehicleCategory]);
+  const amount = vehicleCategory === 'Two Wheeler' ? 50 : 200;
 
+  // Reset form state every time modal opens
   useEffect(() => {
-    if (showSlotBooking) {
-      fetchSlots();
-    }
-  }, [showSlotBooking, vehicleCategory]);
+    if (!isOpen) return;
+    setVehicleNo('');
+    setBookingDate('');
+    setStartTime('');
+    setEndTime('');
+    setVehicleCategory('Two Wheeler');
+    setShowSlotBooking(false);
+    setSelectedSlot(null);
+    setSlots(null);
+    setBookingConfirmed(false);
+    setErrors({});
+  }, [isOpen]);
 
-  // Update placeName from props or localStorage when component mounts/updates
+  // Resolve placeName only when modal is open
   useEffect(() => {
-    const storedPlaceName = localStorage.getItem('placeName');
-    console.log('Initial placeName check - prop:', propPlaceName, 'stored:', storedPlaceName);
-    
+    if (!isOpen) return;
     if (propPlaceName) {
       setCurrentPlaceName(propPlaceName);
-      localStorage.setItem('placeName', propPlaceName);
-    } else if (storedPlaceName) {
-      setCurrentPlaceName(storedPlaceName);
     } else {
-      console.error('No placeName found in props or localStorage');
-      alert('Error: No location selected. Please go back and select a location.');
-      onClose();
-      return;
+      const stored = localStorage.getItem('placeName');
+      if (stored) {
+        setCurrentPlaceName(stored);
+      } else {
+        alert('No location selected. Please go back and select a location.');
+        onClose();
+      }
     }
-  }, [propPlaceName, onClose]);
+  }, [isOpen, propPlaceName, onClose]);
 
-  // Fetch slots when showSlotBooking changes
+  // Fetch slots whenever slot panel opens or vehicle category changes
   useEffect(() => {
-    if (isOpen && showSlotBooking && currentPlaceName) {
-      console.log('Fetching slots for place:', currentPlaceName);
-      fetchSlots();
-    }
-  }, [isOpen, showSlotBooking, currentPlaceName]);
+    if (!isOpen || !showSlotBooking || !currentPlaceName) return;
+    fetchSlots();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, showSlotBooking, vehicleCategory, currentPlaceName]);
 
   const fetchSlots = async () => {
-    console.log('Fetching slots - PlaceName:', currentPlaceName, 'Category:', vehicleCategory);
-    
-    if (!currentPlaceName) {
-      console.error('No placeName available');
-      alert('No location selected. Please go back and select a location.');
-      onClose();
-      return;
-    }
-    
+    setSlots(null);
     try {
-      const url = `https://parking-0wap.onrender.com/api/slots?placeName=${encodeURIComponent(currentPlaceName)}&vehicleCategory=${encodeURIComponent(vehicleCategory)}`;
-      console.log('Fetching from URL:', url);
-      
+      const url = `${BASE_URL}/api/slots?placeName=${encodeURIComponent(currentPlaceName)}&vehicleCategory=${encodeURIComponent(vehicleCategory)}`;
       const response = await fetch(url);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
+      if (!response.ok) throw new Error(`Server error: ${response.status}`);
       const data = await response.json();
-      console.log('API response:', data);
-      
       if (data.success && data.slots) {
-        const sortedSlots = [...data.slots].sort((a, b) => a.slotno - b.slotno);
-        setSlots(sortedSlots);
-        console.log('Slots set:', sortedSlots.length);
+        setSlots([...data.slots].sort((a, b) => a.slotno - b.slotno));
       } else {
-        console.error('API returned error or no slots:', data.message);
         setSlots([]);
       }
     } catch (error) {
       console.error('Error fetching slots:', error);
-      alert(`Error: ${error.message}`); // Temporary alert for mobile debugging
       setSlots([]);
     }
   };
 
-  const handleSlotClick = (index) => {
-    if (slots && slots[index] && slots[index].status === 'Available') {
-      setSelectedSlot(slots[index].slotno); 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!vehicleNo.trim()) newErrors.vehicleNo = 'Vehicle number is required';
+    if (!bookingDate) newErrors.bookingDate = 'Booking date is required';
+    if (!startTime) newErrors.startTime = 'Start time is required';
+    if (!endTime) newErrors.endTime = 'End time is required';
+    if (startTime && endTime && startTime >= endTime) {
+      newErrors.endTime = 'End time must be after start time';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleBookSlotsClick = () => {
+    if (validateForm()) {
+      setShowSlotBooking(true);
     }
   };
 
-  const handleSlotBooking = async () => {
+  const handleSlotClick = (slot) => {
+    if (slot.status === 'Available') {
+      setSelectedSlot(slot.slotno);
+    }
+  };
+
+  const handleConfirmBooking = async () => {
     const email = localStorage.getItem('email');
-    const placeName = localStorage.getItem('placeName');
-  
-    const userProfileData = {
-      placeName,
+    const bookingData = {
+      placeName: currentPlaceName,
       vehicleNo,
       vehicleCategory,
       startTime,
       endTime,
       bookingDate,
-      selectedSlot, 
+      selectedSlot,
       profileImg: 'path_to_image.jpg',
-      email
+      email,
     };
-  
+
     try {
-      const response = await fetch('https://parking-0wap.onrender.com/api/userprofiledetails', {
+      const response = await fetch(`${BASE_URL}/api/userprofiledetails`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userProfileData),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData),
       });
-  
       const data = await response.json();
       if (data.success) {
-        console.log('User profile details saved:', data.userProfile);
-        console.log({placeName});
-        setBookingConfirmed(true);
-
-        await sendBookingEmail({
-          place_name: placeName,
+        // Fire email in background — don't block navigation
+        sendBookingEmail({
+          place_name: currentPlaceName,
           vehicle_no: vehicleNo,
           vehicle_category: vehicleCategory,
           start_time: startTime,
           end_time: endTime,
           booking_date: bookingDate,
           slot: selectedSlot,
-          email: email
+          email,
         });
-
+        setBookingConfirmed(true);
         setTimeout(() => {
+          onClose();
           navigate('/my-bookings');
         }, 2000);
       } else {
-        console.error('Error:', data.message);
+        alert('Booking failed. Please try again.');
       }
     } catch (error) {
-      console.error('Error saving user profile details:', error);
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    if (!vehicleNo) newErrors.vehicleNo = 'Vehicle number is required';
-    if (!bookingDate) newErrors.bookingDate = 'Booking date is required';
-    if (!startTime) newErrors.startTime = 'Start time is required';
-    if (!endTime) newErrors.endTime = 'End time is required';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleBookSlotsClick = () => {
-    if (!currentPlaceName) {
-      alert('No location selected. Please go back and select a location.');
-      return;
-    }
-    
-    if (validateForm()) {
-      setShowSlotBooking(true);
+      console.error('Error saving booking:', error);
+      alert('Something went wrong. Please try again.');
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div>
+    <div className="payment-modal-overlay">
       {bookingConfirmed && (
         <div className="booking-confirmation">
-          Booking Confirmed!
+          ✓ Booking Confirmed! Redirecting...
         </div>
       )}
-      <div className={`background-blur ${isBlurred ? 'blurred' : ''}`}></div>
       <div className="payment-modal" id="paybox">
-        <button className="close-button" onClick={onClose}>X</button>
+        <button className="close-button" onClick={onClose} aria-label="Close modal">✕</button>
+
         {!showSlotBooking ? (
           <>
-            <h1 id="paytext">Book Slots & Payment</h1>
+            <h1 id="paytext">Book Slots &amp; Payment</h1>
+            <p className="place-name-label">Location: <strong>{currentPlaceName}</strong></p>
+
             <div className="input-group">
-              <label htmlFor="vehicleNo" id="vehicleNo-label">Enter Vehicle no*</label>
-              <input type="text" required id="vehicleNo" name="vehicleNo" value={vehicleNo} onChange={(e) => setVehicleNo(e.target.value)} />
-              {errors.vehicleNo && <span className="error text-red-500">{errors.vehicleNo}*</span>}
+              <label htmlFor="vehicleNo">Vehicle Number*</label>
+              <input
+                type="text"
+                id="vehicleNo"
+                value={vehicleNo}
+                onChange={(e) => setVehicleNo(e.target.value)}
+                placeholder="e.g. TN01AB1234"
+              />
+              {errors.vehicleNo && <span className="error">{errors.vehicleNo}</span>}
             </div>
 
             <div className="input-group">
-              <label htmlFor="vehicleCategory" id="vehicleCategory-label">Enter Category</label>
-              <select id="vehicleCategory" name="vehicleCategory" required value={vehicleCategory} onChange={(e) => setVehicleCategory(e.target.value)}>
-                <option value="Two Wheeler">Two Wheeler</option>
-                <option value="Four Wheeler">Four Wheeler</option>
+              <label htmlFor="vehicleCategory">Vehicle Category</label>
+              <select
+                id="vehicleCategory"
+                value={vehicleCategory}
+                onChange={(e) => setVehicleCategory(e.target.value)}
+              >
+                <option value="Two Wheeler">Two Wheeler (₹50)</option>
+                <option value="Four Wheeler">Four Wheeler (₹200)</option>
               </select>
             </div>
 
             <div className="input-group">
-              <label htmlFor="bookingDate" id="bookingDate-label">Booking Date*</label>
-              <input type="date" id="bookingDate" name="bookingDate" required value={bookingDate} onChange={(e) => setBookingDate(e.target.value)} />
-              {errors.bookingDate && <span className="error text-red-500">{errors.bookingDate}*</span>}
+              <label htmlFor="bookingDate">Booking Date*</label>
+              <input
+                type="date"
+                id="bookingDate"
+                value={bookingDate}
+                min={new Date().toISOString().split('T')[0]}
+                onChange={(e) => setBookingDate(e.target.value)}
+              />
+              {errors.bookingDate && <span className="error">{errors.bookingDate}</span>}
             </div>
 
             <div className="input-group">
-              <label htmlFor="startTime" id="startTime-label">Start Time*</label>
-              <input type="time" id="startTime" name="startTime" required value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-              {errors.startTime && <span className="error text-red-500">{errors.startTime}*</span>}
+              <label htmlFor="startTime">Start Time*</label>
+              <input
+                type="time"
+                id="startTime"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+              />
+              {errors.startTime && <span className="error">{errors.startTime}</span>}
             </div>
 
             <div className="input-group">
-              <label htmlFor="endTime" id="endTime-label">End Time*</label>
-              <input type="time" id="endTime" name="endTime" required value={endTime} onChange={(e) => setEndTime(e.target.value)} />
-              {errors.endTime && <span className="error text-red-500">{errors.endTime}*</span>}
+              <label htmlFor="endTime">End Time*</label>
+              <input
+                type="time"
+                id="endTime"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
+              />
+              {errors.endTime && <span className="error">{errors.endTime}</span>}
             </div>
 
             <div className="modal-footer">
-              <button onClick={handleBookSlotsClick} id="bookslots-button">Book Slots</button>
-              <button onClick={onClose} id="close-button">Close</button>
+              <button onClick={handleBookSlotsClick} id="bookslots-button">
+                Book Slots
+              </button>
+              <button onClick={onClose} id="close-button">Cancel</button>
             </div>
           </>
         ) : (
           <div>
             <div className="slot-booking-area">
               <h2>Select Your Slot</h2>
+              <p className="slot-subtitle">{currentPlaceName} — {vehicleCategory}</p>
               <div className="slots-grid">
                 {slots === null ? (
-                  <p>Loading slots...</p>
+                  <p className="loading-text">Loading slots...</p>
                 ) : slots.length > 0 ? (
-                  slots.map((slot, index) => (
+                  slots.map((slot) => (
                     <div
-                      key={index}
-                      className={`slot ${selectedSlot === slot.slotno ? "selected" : ""} ${slot.status !== 'Available' ? "unavailable" : ""}`}
-                      onClick={() => handleSlotClick(index)}
+                      key={slot.slotno}
+                      className={`slot ${selectedSlot === slot.slotno ? 'selected' : ''} ${slot.status !== 'Available' ? 'unavailable' : ''}`}
+                      onClick={() => handleSlotClick(slot)}
+                      title={slot.status !== 'Available' ? 'Slot not available' : `Slot ${slot.slotno}`}
                     >
                       {slot.slotno}
                     </div>
@@ -285,14 +275,23 @@ const PaymentModal = ({ isOpen, onClose, tcapacitys, fcapacitys, email, placeNam
                 ) : (
                   <div className="no-slots-message">
                     <p>No slots available for {vehicleCategory} at this location.</p>
-                    <p>Please try a different vehicle category or check back later.</p>
+                    <p>Try a different vehicle category or check back later.</p>
                   </div>
                 )}
               </div>
             </div>
             <div className="modal-footer">
-              <p>Total Amount: ₹{amount}</p>
-              <button onClick={handleSlotBooking} id="payment-button" disabled={selectedSlot === null}>Confirm</button>
+              <p>Total: <strong>₹{amount}</strong></p>
+              <button
+                onClick={handleConfirmBooking}
+                id="payment-button"
+                disabled={!selectedSlot}
+              >
+                Confirm Booking
+              </button>
+              <button onClick={() => setShowSlotBooking(false)} id="close-button">
+                Back
+              </button>
             </div>
           </div>
         )}
