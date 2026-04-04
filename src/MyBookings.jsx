@@ -95,44 +95,9 @@ const MyBookings = () => {
     }
   };
 
-  const sendBookingEmail = async (booking) => {
-    try {
-      const formattedBookingDate = formatDate(booking.booking_date);
-      const response = await fetch('https://parking-0wap.onrender.com/send-booking-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          placeName: booking.place_name,
-          vehicleNo: booking.vehicle_no,
-          vehicleCategory: booking.vehicle_category,
-          startTime: booking.start_time,
-          endTime: booking.end_time,
-          bookingDate: formattedBookingDate,
-          slot: booking.slot,
-          email: booking.email,
-        }),
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        console.log('Email sent successfully');
-      } else {
-        console.error('Error sending email:', data.message);
-      }
-    } catch (error) {
-      console.error('Error sending email:', error);
-    }
-  };
-
-  const handleBookClick = async (booking) => {
-    // Automatically send the email when the user books a slot
-    await sendBookingEmail(booking);
-  };
-
   useEffect(() => {
     fetchBookingsByEmail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

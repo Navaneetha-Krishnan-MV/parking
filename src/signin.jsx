@@ -3,8 +3,7 @@
 // export default Signin;
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import lo from './Resources/lo.gif'; // Replace with your image path
-import rightImage from './Resources/logsign.gif'; // Replace with your right image path
+import lo from './Resources/lo.gif';
 import { auth, provider } from "./firebase";
 import { signInWithPopup } from "firebase/auth";
 import "./Resources/styles/Signin.css";

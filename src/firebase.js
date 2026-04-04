@@ -1,10 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, setPersistence, browserLocalPersistence } from "firebase/auth";
 
-// Environment detection
-const isLocalhost = window.location.hostname === 'localhost' || 
-                   window.location.hostname === '127.0.0.1';
-
 const productionDomains = [
   'parking-0wap.onrender.com',
   'your-production-domain.com'  // Replace with your actual production domain
