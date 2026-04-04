@@ -3,7 +3,8 @@ import { getAuth, GoogleAuthProvider, setPersistence, browserLocalPersistence } 
 
 const productionDomains = [
   'parking-0wap.onrender.com',
-  'your-production-domain.com'  // Replace with your actual production domain
+  'parking-git-master-navaneethakrishnan-m-vs-projects.vercel.app',
+  'parking-ab95l100d-navaneethakrishnan-m-vs-projects.vercel.app',
 ];
 
 const isProduction = productionDomains.includes(window.location.hostname);
